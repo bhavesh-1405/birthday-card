@@ -694,8 +694,7 @@
        SCREEN 3: INTERACTIVE MULTI-PHOTO POLAROID DECK / STACK
        ===================================================================== */
     #screen3 {
-      padding: 16px 16px 56px;
-      gap: 4px;
+      padding: 14px 16px 52px;
     }
 
     .polaroid-deck-stage {
@@ -706,6 +705,14 @@
       min-height: 320px;
       margin: 10px 0 12px;
       touch-action: none; /* Enables crisp touch drag/swipe without scrolling */
+    }
+
+    @media (min-width: 640px) {
+      .polaroid-deck-stage {
+        width: min(330px, 84vw);
+        height: min(425px, 52dvh);
+        margin: 12px 0 14px;
+      }
     }
 
     /* Gentle pendulum entrance when Screen 3 becomes active */
@@ -727,12 +734,10 @@
       100% { transform: rotate(0deg); }
     }
 
-    /* Individual Polaroid card inside the 3D stack (strict vertical flex, never clips caption) */
+    /* Individual Polaroid card inside the 3D stack */
     .polaroid-card {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
       background: #fffdfb;
       padding: 12px 12px 14px 12px;
       border-radius: 10px;
@@ -751,6 +756,12 @@
       flex-direction: column;
       will-change: transform, opacity;
       pointer-events: none;
+    }
+
+    @media (min-width: 640px) {
+      .polaroid-card {
+        padding: 14px 14px 16px 14px;
+      }
     }
 
     .polaroid-card.is-top {
@@ -850,36 +861,36 @@
       );
     }
 
+    /* Strict flex photo window so caption always has dedicated space below */
     .polaroid-photo-frame {
-      position: relative;
-      width: 100%;
       flex: 1 1 0;
       min-height: 0;
-      border-radius: 5px;
+      position: relative;
+      width: 100%;
       overflow: hidden;
-      background: #ffeef4;
+      border-radius: 5px;
+      background: #ffe6ee;
       box-shadow: inset 0 0 0 1px rgba(120, 60, 85, 0.08);
     }
 
-    /* Soft ambient blurred backdrop fills extra space smoothly for any aspect ratio */
+    /* Soft blurred ambient backdrop fills any extra edges seamlessly */
     .polaroid-photo-frame .photo-bg-blur {
       position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
+      inset: -12px;
+      width: calc(100% + 24px);
+      height: calc(100% + 24px);
       object-fit: cover;
-      filter: blur(18px) saturate(1.15);
-      transform: scale(1.18);
-      opacity: 0.6;
-      z-index: 1;
+      filter: blur(14px) brightness(0.95) saturate(1.1);
+      opacity: 0.72;
+      transform: scale(1.06);
       pointer-events: none;
       -webkit-user-drag: none;
     }
 
-    /* Crisp foreground photo (defaults to contain so heads/edges are never cropped) */
-    .polaroid-photo-frame .photo-main {
+    /* Sharp foreground photo shows 100% intact without cropping heads/edges */
+    .polaroid-photo-frame .photo-fg {
       position: relative;
-      z-index: 2;
+      z-index: 1;
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -893,7 +904,7 @@
     .polaroid-sheen {
       position: absolute;
       inset: 0;
-      z-index: 3;
+      z-index: 2;
       background: linear-gradient(
         118deg,
         rgba(255, 255, 255, 0) 28%,
@@ -905,27 +916,9 @@
       pointer-events: none;
     }
 
-    /* Handwritten caption inside each Polaroid (no clipping on cursive descenders or emojis) */
-    .polaroid-caption {
-      flex: 0 0 auto;
-      overflow: visible;
-      padding: 10px 6px 2px 6px;
-      margin: 0;
-      font-family: var(--font-hand);
-      font-size: clamp(1.35rem, 4.5vw, 1.75rem);
-      line-height: 1.35;
-      text-align: center;
-      color: #68304f;
-      word-break: break-word;
-    }
-
-    /* Glassmorphism Deck Navigation Pill Controls & Dots */
-    .deck-controls {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 4px;
+    .polaroid-card.is-top .polaroid-sheen {
+      opacity: 1;
+      animation: photoSheen 5.2s ease-in-out infinite;
     }
 
     @keyframes photoSheen {
@@ -951,7 +944,7 @@
 
     .sticker-tl { top: -11px; left: -13px; animation-delay: 0s; }
     .sticker-tr { top: 8px; right: -15px; animation-delay: 0.7s; font-size: 23px; }
-    .sticker-bl { bottom: 38px; left: -13px; animation-delay: 1.3s; font-size: 19px; }
+    .sticker-bl { bottom: 44px; left: -13px; animation-delay: 1.3s; font-size: 19px; }
     .sticker-br { bottom: -9px; right: -12px; animation-delay: 0.4s; font-size: 22px; }
 
     @keyframes stickerFloat {
@@ -959,24 +952,19 @@
       50% { transform: translateY(-6px) rotate(8deg) scale(1.12); }
     }
 
-    /* Handwritten caption inside each Polaroid */
+    /* Handwritten caption inside each Polaroid — never clips descenders or emojis */
     .polaroid-caption {
+      flex: 0 0 auto;
+      overflow: visible;
+      white-space: normal;
+      word-wrap: break-word;
       font-family: var(--font-hand);
-      font-size: 1.48rem;
-      line-height: 1.15;
+      font-size: clamp(1.2rem, 4.4vw, 1.55rem);
+      line-height: 1.35;
       text-align: center;
       color: #68304f;
-      margin: 11px 4px 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    @media (min-width: 640px) {
-      .polaroid-caption {
-        font-size: 1.65rem;
-        margin-top: 13px;
-      }
+      margin: 10px 0 0;
+      padding: 2px 6px 4px;
     }
 
     /* Glassmorphism Deck Navigation Pill Controls & Dots */
@@ -985,7 +973,7 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .deck-nav-btn {
@@ -1037,10 +1025,564 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
-    /* ... existing code ... -->
+    .deck-dot {
+      width: 9px;
+      height: 9px;
+      padding: 0;
+      border: none;
+      border-radius: 9999px;
+      background: rgba(124, 59, 94, 0.26);
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .deck-dot:hover {
+      background: rgba(255, 92, 138, 0.55);
+      transform: scale(1.2);
+    }
+
+    .deck-dot.active {
+      width: 24px;
+      background: linear-gradient(90deg, #ff5c8a, #ff9a76);
+      box-shadow: 0 0 10px rgba(255, 92, 138, 0.52);
+    }
+
+    /* Glowing Shimmer Button */
+    .btn-glow {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ff5c8a 0%, #ff8577 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 9999px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(255, 92, 138, 0.38);
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease;
+    }
+
+    .btn-glow::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 75%;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.45), rgba(255,255,255,0));
+      transform: skewX(-22deg);
+      animation: btnShimmer 3.2s ease-in-out infinite;
+    }
+
+    @keyframes btnShimmer {
+      0%, 55% { left: -120%; }
+      85%, 100% { left: 155%; }
+    }
+
+    .btn-glow:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 14px 28px rgba(255, 92, 138, 0.5);
+    }
+
+    .btn-glow:active {
+      transform: translateY(0) scale(0.97);
+    }
+
+    /* Celebratory highlight pulse on "Keep Going →" once last photo is viewed */
+    .btn-glow.ready-pulse {
+      animation: readyButtonPulse 1.65s ease-in-out infinite;
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.55), 0 12px 30px rgba(255, 92, 138, 0.58);
+    }
+
+    @keyframes readyButtonPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55), 0 10px 26px rgba(255, 92, 138, 0.48);
+      }
+      50% {
+        transform: scale(1.06);
+        box-shadow: 0 0 0 7px rgba(255, 214, 165, 0.62), 0 16px 34px rgba(255, 92, 138, 0.66);
+      }
+    }
+
+    .btn-soft {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: var(--ink-primary);
+      border: 1.5px solid rgba(255, 255, 255, 0.92);
+      border-radius: 9999px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(150, 62, 102, 0.14);
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease;
+    }
+
+    .btn-soft:hover {
+      transform: translateY(-2px) scale(1.03);
+      background: rgba(255, 255, 255, 0.92);
+    }
+
+    .btn-soft:active {
+      transform: scale(0.97);
+    }
+
+    /* =====================================================================
+       SCREEN 4: PERSONAL LETTER & GRAND FINALE
+       ===================================================================== */
+    .letter-perspective {
+      perspective: 1200px;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .letter-card {
+      position: relative;
+      width: 100%;
+      max-height: 66dvh;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid rgba(255, 255, 255, 0.92);
+      border-radius: 26px;
+      padding: 26px 24px 22px;
+      box-shadow:
+        0 22px 46px rgba(173, 73, 118, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      transform-origin: top center;
+      transform: rotateX(-24deg) scale(0.94);
+      opacity: 0;
+      transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 92, 138, 0.35) transparent;
+    }
+
+    .screen.active .letter-card {
+      transform: rotateX(0deg) scale(1);
+      opacity: 1;
+    }
+
+    /* Staggered paragraph reveal */
+    .letter-para {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .letter-para.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Bouncing finale icons */
+    .finale-icons {
+      display: inline-flex;
+      gap: 10px;
+      font-size: 38px;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .finale-icons.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .finale-icons.visible span:first-child {
+      display: inline-block;
+      animation: iconBounce 1.5s ease-in-out infinite;
+    }
+
+    .finale-icons.visible span:last-child {
+      display: inline-block;
+      animation: iconBounce 1.5s ease-in-out 0.25s infinite;
+    }
+
+    @keyframes iconBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-9px) scale(1.12); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Ambient Layer (Twinkling stars, bokeh hearts, pastel balloons) -->
+  <div id="ambient-bg" aria-hidden="true"></div>
+
+  <!-- Full-Screen Physics Particle Canvas Overlay -->
+  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+
+  <!-- Top-Right Mute / Unmute Audio Toggle -->
+  <button
+    id="audio-toggle"
+    type="button"
+    aria-label="Toggle birthday music"
+    title="Toggle birthday music"
+  >
+    <!-- Speaker ON Icon (shown when sound is enabled) -->
+    <svg id="icon-sound-on" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+    </svg>
+    <!-- Speaker OFF Icon (shown when muted) -->
+    <svg id="icon-sound-off" class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <line x1="23" y1="9" x2="17" y2="15"></line>
+      <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+  </button>
+
+  <!-- Main 4-Screen Interactive Stage -->
+  <main id="stage">
+    <!-- ===============================================================
+         SCREEN 1: THE INTERACTIVE 3D ENVELOPE
+         =============================================================== -->
+    <section id="screen1" class="screen active" aria-label="Birthday Envelope">
+      <h1 class="font-display float-heading text-3xl sm:text-4xl text-center text-[#591f40] mb-5 px-2 leading-snug">
+        Your birthday surprise is here!
+      </h1>
+
+      <div
+        id="envelope-scene"
+        class="envelope-scene"
+        role="button"
+        tabindex="0"
+        aria-label="Tap to open your birthday envelope"
+      >
+        <div class="envelope-bob">
+          <div class="envelope-wrapper">
+            <div class="envelope-glow"></div>
+            <div class="env-back"></div>
+
+            <!-- Golden Birthday Invite Card sliding out on open -->
+            <div class="env-card">
+              <span class="text-xl mb-1">✨🎂✨</span>
+              <span class="font-hand text-2xl font-bold text-[#9c5a14] leading-tight">
+                Happy Birthday Divyaa!
+              </span>
+              <span class="text-xs font-semibold tracking-wider uppercase text-[#b87a2a] mt-1">
+                A Little Magic Inside
+              </span>
+            </div>
+
+            <!-- Envelope Front Pocket Flaps -->
+            <div class="env-front-pocket">
+              <div class="env-flap-left"></div>
+              <div class="env-flap-right"></div>
+              <div class="env-flap-bottom"></div>
+            </div>
+
+            <!-- Top 3D Rotating Flap -->
+            <div class="env-flap-top">
+              <div class="env-flap-top-shape"></div>
+            </div>
+
+            <!-- Glowing Red Heart Wax Seal -->
+            <div id="wax-seal" class="wax-seal" aria-hidden="true">
+              <svg class="w-6 h-6 text-[#ffe8ef] drop-shadow" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p id="envelope-prompt" class="pulse-prompt mt-5 text-base sm:text-lg font-semibold text-[#752e53] bg-white/50 backdrop-blur-sm px-5 py-2 rounded-full border border-white/75 shadow-sm">
+        Tap to open 💌
+      </p>
+    </section>
+
+    <!-- ===============================================================
+         SCREEN 2: INTERACTIVE ANIMATED BIRTHDAY CAKE
+         =============================================================== -->
+    <section id="screen2" class="screen" aria-label="Birthday Cake">
+      <h2 class="font-display bounce-in-heading text-4xl sm:text-5xl text-center text-[#591f40] mb-1">
+        Happy Birthday Divyaa!
+      </h2>
+      <p id="cake-subtitle" class="text-base sm:text-lg font-semibold text-[#7c3b5e] mb-2 transition-all duration-300 text-center px-3">
+        Make a wish &amp; tap the candles...
+      </p>
+
+      <div
+        id="cake-stage"
+        class="cake-stage"
+        role="button"
+        tabindex="0"
+        aria-label="Tap the birthday cake to blow out candles and cut it"
+      >
+        <!-- Warm radial candle glow -->
+        <div class="candle-ambient-glow"></div>
+
+        <!-- Diagonal sparkle cut sweep effect -->
+        <div class="cut-sparkle-sweep"></div>
+
+        <!-- Custom Detailed Multi-Tier Pastel Birthday Cake SVG -->
+        <svg viewBox="0 0 260 260" class="w-full h-full drop-shadow-xl overflow-visible" aria-hidden="true">
+          <defs>
+            <linearGradient id="plateGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#fff0f5" />
+              <stop offset="50%" stop-color="#ffffff" />
+              <stop offset="100%" stop-color="#f7dce6" />
+            </linearGradient>
+            <linearGradient id="bottomTierGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffb3c6" />
+              <stop offset="100%" stop-color="#ff8fab" />
+            </linearGradient>
+            <linearGradient id="topTierGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffe5d4" />
+              <stop offset="100%" stop-color="#ffcab0" />
+            </linearGradient>
+            <linearGradient id="frostingWhite" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="100%" stop-color="#fff0f6" />
+            </linearGradient>
+            <linearGradient id="frostingLavender" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f8e8ff" />
+              <stop offset="100%" stop-color="#e7c6ff" />
+            </linearGradient>
+          </defs>
+
+          <!-- Cake Stand Base & Shadow -->
+          <ellipse cx="130" cy="238" rx="74" ry="12" fill="rgba(145, 58, 98, 0.16)" />
+          <path d="M112 214 L148 214 L156 234 Q130 242 104 234 Z" fill="#f3d1df" />
+          <ellipse cx="130" cy="212" rx="92" ry="17" fill="url(#plateGrad)" stroke="#f7d6e3" stroke-width="2" />
+
+          <!-- Bottom Cake Tier (Main Body) -->
+          <g id="cake-main-body">
+            <rect x="52" y="150" width="156" height="58" rx="14" fill="url(#bottomTierGrad)" />
+            <!-- Subtle creamy filling stripe -->
+            <rect x="52" y="176" width="156" height="7" fill="#fff5f8" opacity="0.85" />
+
+            <!-- Glossy Pastel Frosting Drips on Bottom Tier -->
+            <path
+              d="M52 158 Q52 146 66 146 L194 146 Q208 146 208 158 L208 164
+                 Q198 175 190 163 Q181 180 171 163 Q161 174 152 162
+                 Q142 181 131 163 Q120 175 110 163 Q99 179 88 163
+                 Q78 174 69 162 Q60 173 52 163 Z"
+              fill="url(#frostingWhite)"
+            />
+
+            <!-- Top Cake Tier -->
+            <rect x="74" y="102" width="112" height="48" rx="12" fill="url(#topTierGrad)" />
+
+            <!-- Lavender-Pink Frosting Drips on Top Tier -->
+            <path
+              d="M74 110 Q74 98 86 98 L174 98 Q186 98 186 110 L186 116
+                 Q177 127 169 116 Q160 131 151 116 Q142 126 133 115
+                 Q123 130 113 116 Q103 126 94 116 Q84 127 74 116 Z"
+              fill="url(#frostingLavender)"
+            />
+
+            <!-- Piped Frosting Pearls along Tier Rim -->
+            <g fill="#ffffff">
+              <circle cx="62" cy="206" r="5" />
+              <circle cx="76" cy="208" r="5" />
+              <circle cx="91" cy="209" r="5" />
+              <circle cx="106" cy="210" r="5" />
+              <circle cx="122" cy="210" r="5" />
+              <circle cx="138" cy="210" r="5" />
+              <circle cx="154" cy="210" r="5" />
+              <circle cx="169" cy="209" r="5" />
+              <circle cx="184" cy="208" r="5" />
+              <circle cx="198" cy="206" r="5" />
+            </g>
+
+            <!-- Colorful Sprinkles on Bottom & Top Tiers -->
+            <g stroke-linecap="round" stroke-width="3.2">
+              <line x1="74" y1="156" x2="80" y2="153" stroke="#ff5c8a" />
+              <line x1="98" y1="155" x2="104" y2="158" stroke="#ffd43b" />
+              <line x1="126" y1="154" x2="132" y2="157" stroke="#63e6be" />
+              <line x1="158" y1="156" x2="165" y2="153" stroke="#9775fa" />
+              <line x1="184" y1="155" x2="190" y2="158" stroke="#ff922b" />
+              <line x1="88" y1="108" x2="94" y2="105" stroke="#ff5c8a" />
+              <line x1="114" y1="106" x2="120" y2="109" stroke="#4dabf7" />
+              <line x1="142" y1="108" x2="148" y2="105" stroke="#ffd43b" />
+              <line x1="168" y1="107" x2="173" y2="110" stroke="#63e6be" />
+            </g>
+
+            <!-- Cute Smiling Kawaii Face on Bottom Tier -->
+            <circle cx="114" cy="190" r="3" fill="#591f40" />
+            <circle cx="146" cy="190" r="3" fill="#591f40" />
+            <ellipse cx="107" cy="194" rx="4.5" ry="2.5" fill="#ff5c8a" opacity="0.45" />
+            <ellipse cx="153" cy="194" rx="4.5" ry="2.5" fill="#ff5c8a" opacity="0.45" />
+            <path d="M124 191 Q130 198 136 191" fill="none" stroke="#591f40" stroke-width="2.4" stroke-linecap="round" />
+
+            <!-- 3 Pastel Striped Candles -->
+            <!-- Candle 1 (Left) -->
+            <g>
+              <rect x="95" y="72" width="10" height="29" rx="4" fill="#ff8fab" />
+              <path d="M95 80 L105 76 M95 89 L105 85 M95 97 L105 93" stroke="#ffffff" stroke-width="2.2" />
+              <line x1="100" y1="72" x2="100" y2="67" stroke="#5c4033" stroke-width="2" stroke-linecap="round" />
+            </g>
+            <!-- Candle 2 (Center, slightly taller) -->
+            <g>
+              <rect x="125" y="63" width="10" height="38" rx="4" fill="#a5d8ff" />
+              <path d="M125 72 L135 68 M125 81 L135 77 M125 90 L135 86 M125 98 L135 94" stroke="#ffffff" stroke-width="2.2" />
+              <line x1="130" y1="63" x2="130" y2="58" stroke="#5c4033" stroke-width="2" stroke-linecap="round" />
+            </g>
+            <!-- Candle 3 (Right) -->
+            <g>
+              <rect x="155" y="72" width="10" height="29" rx="4" fill="#d0bfff" />
+              <path d="M155 80 L165 76 M155 89 L165 85 M155 97 L165 93" stroke="#ffffff" stroke-width="2.2" />
+              <line x1="160" y1="72" x2="160" y2="67" stroke="#5c4033" stroke-width="2" stroke-linecap="round" />
+            </g>
+          </g>
+
+          <!-- Animated Cake Slice Overlay (Pops outward on 2nd tap) -->
+          <g id="cake-slice-group">
+            <path d="M168 150 L205 152 Q212 153 212 162 L212 200 Q212 208 202 208 L168 208 Z" fill="#ff9eb8" />
+            <!-- Inner sponge & cream layers visible when slice pops out -->
+            <path d="M168 150 L176 153 L176 208 L168 208 Z" fill="#ffe8d6" />
+            <rect x="168" y="176" width="44" height="7" fill="#fff5f8" />
+            <!-- Top frosting on slice -->
+            <path d="M166 150 L204 150 Q212 150 212 160 L212 165 Q203 175 194 163 Q184 176 175 163 Q169 169 166 162 Z" fill="#ffffff" />
+            <!-- Little cherry on slice -->
+            <circle cx="192" cy="144" r="6" fill="#ff4d6d" />
+            <circle cx="190" cy="142" r="1.8" fill="#ffffff" opacity="0.85" />
+          </g>
+        </svg>
+
+        <!-- Realistic Flickering Flames + Smoke Puffs Layer -->
+        <div class="flames-layer">
+          <div class="flame-holder c1">
+            <div class="flame"></div>
+            <div class="smoke-puff p1"></div>
+            <div class="smoke-puff p2"></div>
+          </div>
+          <div class="flame-holder c2">
+            <div class="flame"></div>
+            <div class="smoke-puff p1"></div>
+            <div class="smoke-puff p2"></div>
+          </div>
+          <div class="flame-holder c3">
+            <div class="flame"></div>
+            <div class="smoke-puff p1"></div>
+            <div class="smoke-puff p2"></div>
+          </div>
+        </div>
+      </div>
+
+      <p id="cake-prompt" class="pulse-prompt mt-2 text-base sm:text-lg font-semibold text-[#752e53] bg-white/55 backdrop-blur-sm px-5 py-2 rounded-full border border-white/80 shadow-sm text-center">
+        Tap the cake to blow out the candles 🕯️
+      </p>
+    </section>
+
+    <!-- ===============================================================
+         SCREEN 3: MEMORY LANE (INTERACTIVE MULTI-PHOTO POLAROID STACK)
+         =============================================================== -->
+    <section id="screen3" class="screen" aria-label="Memory Lane Photo Stack">
+      <h2 class="font-display float-heading text-3xl sm:text-4xl text-center text-[#591f40] mb-0 leading-tight">
+        Remember these? 📸
+      </h2>
+      <p class="text-xs sm:text-sm font-semibold text-[#7c3b5e] opacity-85 mb-0.5">
+        Swipe or tap a photo to flip through memories ✨
+      </p>
+
+      <!-- 3D Polaroid Card Stack Container (Populated dynamically from MEMORIES) -->
+      <div class="polaroid-deck-stage" id="polaroid-deck-stage">
+        <div class="deck-entrance-wrap" id="polaroid-deck" aria-live="polite"></div>
+      </div>
+
+      <!-- Prev / Counter / Next Glassmorphism Controls -->
+      <div class="deck-controls">
+        <button
+          id="btn-photo-prev"
+          type="button"
+          class="deck-nav-btn"
+          aria-label="Previous memory photo"
+        >
+          ← Prev
+        </button>
+        <span id="deck-counter" class="deck-counter">1 / 4</span>
+        <button
+          id="btn-photo-next"
+          type="button"
+          class="deck-nav-btn"
+          aria-label="Next memory photo"
+        >
+          Next →
+        </button>
+      </div>
+
+      <!-- Clickable Photo Indicator Dots -->
+      <div id="deck-dots" class="deck-dots" role="tablist" aria-label="Select memory photo"></div>
+
+      <!-- Proceed to Personal Letter -->
+      <button
+        id="btn-to-letter"
+        type="button"
+        class="btn-glow px-7 py-2.5 sm:py-3 text-base sm:text-lg"
+      >
+        Keep Going →
+      </button>
+    </section>
+
+    <!-- ===============================================================
+         SCREEN 4: THE PERSONAL LETTER & GRAND FINALE
+         =============================================================== -->
+    <section id="screen4" class="screen" aria-label="Personal Birthday Letter">
+      <div class="letter-perspective">
+        <article class="letter-card text-center">
+          <div class="inline-flex items-center justify-center gap-2 mb-2">
+            <span class="text-xl">💌</span>
+            <h2 class="font-display text-3xl sm:text-4xl text-[#591f40]">
+              A little note...
+            </h2>
+            <span class="text-xl">✨</span>
+          </div>
+
+          <div class="w-16 h-1 mx-auto mb-5 rounded-full bg-gradient-to-r from-[#ff7aa2] via-[#ffb58a] to-[#c79bff] opacity-80"></div>
+
+          <!-- User's Exact Personal Message with Sequential Staggered Animation -->
+          <div id="letter-paragraphs" class="space-y-3.5 text-[15px] sm:text-base font-semibold leading-relaxed text-[#52243f]">
+            <p class="letter-para">Happy Birthday, Special One! 💖🎂</p>
+            <p class="letter-para">Who knew you'd become this special to me! ❤️✨</p>
+            <p class="letter-para">You're one of those rare people around whom I can be completely myself, with zero filters and unlimited bakbak! 🫶😂💕</p>
+            <p class="letter-para">Stay crazy, keep smiling, and never stop being you.🥰💫</p>
+            <p class="letter-para">So glad to have you in my life! 💝🤗</p>
+          </div>
+
+          <!-- Bouncing Celebratory Finale Icons -->
+          <div id="finale-icons" class="finale-icons mt-5" aria-hidden="true">
+            <span>🎉</span>
+            <span>💖</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- Finale Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-3 mt-5 px-2">
+        <button
+          id="btn-more-confetti"
+          type="button"
+          class="btn-glow px-6 py-3 text-sm sm:text-base"
+        >
+          Send More Confetti 🎉
+        </button>
+        <button
+          id="btn-replay"
+          type="button"
+          class="btn-soft px-6 py-3 text-sm sm:text-base"
+        >
+          Replay Card ↺
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Subtle 4-Dot Bottom Progress Indicator -->
+  <nav id="progress-dots" aria-label="Card progress">
+    <span class="progress-dot active" data-step="1"></span>
+    <span class="progress-dot" data-step="2"></span>
+    <span class="progress-dot" data-step="3"></span>
+    <span class="progress-dot" data-step="4"></span>
+  </nav>
+
   <script>
     /* =========================================================================
        ★ EASY-TO-EDIT PHOTO MEMORIES LIST ★
@@ -1048,8 +1590,8 @@
        - Put your photo files in the same folder as this HTML file.
        - Available tapeColor options: 'pink' | 'lavender' | 'peach' | 'mint'
        - Any emoji works for sticker!
-       - Optional fit: 'contain' (default, shows 100% of photo with blurred backdrop)
-                       or 'cover' (fills the entire frame edge-to-edge)
+       - Optional fit: 'contain' (default, shows 100% of photo with soft blurred backdrop)
+                       or 'cover' (fills the frame edge-to-edge)
        - Optional position: 'center' (default), 'top', 'center 20%', etc.
        ========================================================================= */
     const MEMORIES = [
@@ -1057,33 +1599,25 @@
         src: './E110605F-7E16-411E-B69F-EB07663BDF8F.png',
         caption: 'Such a great day! ✨',
         tapeColor: 'pink',
-        sticker: '💖',
-        fit: 'contain',
-        position: 'center'
+        sticker: '💖'
       },
       {
         src: './87259B64-F0ED-400C-BB34-1A80180414B0.jpeg',
-        caption: 'The Trio 💖',
+        caption: 'The Trio💖',
         tapeColor: 'lavender',
-        sticker: '🌸',
-        fit: 'contain',
-        position: 'center'
+        sticker: '🌸'
       },
       {
         src: './IMG_6778.jpeg',
-        caption: 'Thumb Queen 😂',
+        caption: 'Thumb Queen ;)💫',
         tapeColor: 'peach',
-        sticker: '⭐',
-        fit: 'contain',
-        position: 'center'
+        sticker: '⭐'
       },
       {
-        src: './photo4.jpg',
-        caption: './IMG_6940.jpeg 🌸',
+        src: './IMG_6940.jpeg',
+        caption: 'Always smiling with you 🥰',
         tapeColor: 'mint',
-        sticker: '🎀',
-        fit: 'contain',
-        position: 'center'
+        sticker: '🎀'
       }
     ];
 
@@ -1851,7 +2385,37 @@
         cards = [];
         dotButtons = [];
 
-          // Photo frame with ambient blurred backdrop + uncropped foreground image
+        MEMORIES.forEach((item, idx) => {
+          const card = document.createElement('div');
+          card.className = 'polaroid-card';
+          card.dataset.index = String(idx);
+
+          const tapeClass = validTapes.has(item.tapeColor) ? `tape-${item.tapeColor}` : 'tape-pink';
+          const mainSticker = item.sticker || '💖';
+          const altSticker1 = cornerStickers[idx % cornerStickers.length];
+          const altSticker2 = cornerStickers[(idx + 2) % cornerStickers.length];
+
+          // Washi tape strip
+          const tape = document.createElement('div');
+          tape.className = `washi-tape ${tapeClass}`;
+          card.appendChild(tape);
+
+          // Floating animated corner stickers
+          const stickersMeta = [
+            { cls: 'sticker-tl', emoji: altSticker1 },
+            { cls: 'sticker-tr', emoji: mainSticker },
+            { cls: 'sticker-bl', emoji: altSticker2 },
+            { cls: 'sticker-br', emoji: mainSticker }
+          ];
+          stickersMeta.forEach((s) => {
+            const span = document.createElement('span');
+            span.className = `polaroid-sticker ${s.cls}`;
+            span.setAttribute('aria-hidden', 'true');
+            span.textContent = s.emoji;
+            card.appendChild(span);
+          });
+
+          // Photo frame with two-layer display (ambient blurred backdrop + sharp uncropped foreground)
           const frame = document.createElement('div');
           frame.className = 'polaroid-photo-frame';
 
@@ -1859,45 +2423,45 @@
           const photoFit = item.fit === 'cover' ? 'cover' : 'contain';
           const photoPos = item.position || 'center';
 
-          // Soft ambient blurred background layer (fills edges seamlessly for portrait/landscape)
-          const bgBlurImg = document.createElement('img');
-          bgBlurImg.className = 'photo-bg-blur';
-          bgBlurImg.alt = '';
-          bgBlurImg.setAttribute('aria-hidden', 'true');
-          bgBlurImg.draggable = false;
+          // Layer A: Soft blurred background image filling any letterbox edges smoothly
+          const bgBlur = document.createElement('img');
+          bgBlur.className = 'photo-bg-blur';
+          bgBlur.alt = '';
+          bgBlur.setAttribute('aria-hidden', 'true');
+          bgBlur.draggable = false;
           if (photoFit === 'cover') {
-            bgBlurImg.style.display = 'none';
+            bgBlur.style.display = 'none';
           }
 
-          // Crisp foreground image layer
+          // Layer B: Crisp foreground image (contain by default so heads/edges are never cropped)
           const img = document.createElement('img');
-          img.className = 'photo-main';
+          img.className = 'photo-fg';
           img.alt = item.caption || `Memory ${idx + 1}`;
           img.draggable = false;
           img.style.objectFit = photoFit;
           img.style.objectPosition = photoPos;
 
-          // Update both foreground and blur layers cleanly if a local file isn't found
+          // Gracefully swap both layers to the pastel SVG fallback if local image is unavailable
           const applyFallback = () => {
             img.onerror = null;
-            bgBlurImg.onerror = null;
+            bgBlur.onerror = null;
             img.src = fallbackUri;
-            bgBlurImg.src = fallbackUri;
+            bgBlur.src = fallbackUri;
           };
 
           img.onerror = applyFallback;
-          bgBlurImg.onerror = () => {
-            bgBlurImg.onerror = null;
-            bgBlurImg.src = fallbackUri;
+          bgBlur.onerror = () => {
+            bgBlur.onerror = null;
+            bgBlur.src = fallbackUri;
           };
 
-          bgBlurImg.src = item.src;
+          bgBlur.src = item.src;
           img.src = item.src;
 
           const sheen = document.createElement('div');
           sheen.className = 'polaroid-sheen';
 
-          frame.appendChild(bgBlurImg);
+          frame.appendChild(bgBlur);
           frame.appendChild(img);
           frame.appendChild(sheen);
           card.appendChild(frame);
