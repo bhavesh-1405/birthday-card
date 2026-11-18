@@ -86,6 +86,52 @@
       line-height: 1.6;
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
+
+    /* Balloon Animations */
+    .balloon-container {
+      display: flex;
+      gap: 25px;
+      margin-top: 30px;
+    }
+    
+    .balloon {
+      font-size: 70px;
+      cursor: pointer;
+      animation: float 3s ease-in-out infinite;
+      transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+      user-select: none;
+    }
+    
+    /* Visible focus state for keyboard navigation */
+    .balloon:focus, .cake:focus {
+      outline: 3px dashed #ff4d4d;
+      outline-offset: 10px;
+      border-radius: 15px;
+    }
+
+    .balloon.popped {
+      transform: scale(1.8);
+      opacity: 0;
+      pointer-events: none; /* Prevents clicking again */
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-25px); }
+    }
+
+    /* Cake Animations */
+    .cake {
+      font-size: 110px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      user-select: none;
+    }
+
+    .cake.clicked {
+      transform: scale(0.8) rotate(-5deg);
+    }
   </style>
 </head>
 <body>
@@ -97,23 +143,21 @@
     <p>Tap to open</p>
   </div>
 
-  <!-- Screen 2: The Cake -->
-  <div id="screen2" class="screen">
-    <h2>Happy Birthday!</h2>
-    <p>Time for cake...</p>
-    <div class="interactive-icon" onclick="nextScreen(3)">🎂</div>
-    <p>Tap the cake to cut it</p>
+<div id="screen2" class="screen">
+    <h2>Pop the balloons!</h2>
+    <div class="balloon-container">
+      <!-- Added tabindex="0" and onkeydown for seamless keyboard navigation -->
+      <div class="balloon" tabindex="0" onclick="popBalloon(this)" onkeydown="handleKey(event, () => popBalloon(this))">🎈</div>
+      <div class="balloon" tabindex="0" onclick="popBalloon(this)" onkeydown="handleKey(event, () => popBalloon(this))" style="animation-delay: 0.4s">🎈</div>
+      <div class="balloon" tabindex="0" onclick="popBalloon(this)" onkeydown="handleKey(event, () => popBalloon(this))" style="animation-delay: 0.8s">🎈</div>
+    </div>
   </div>
 
-  <!-- Screen 3: Memory Lane (Polaroid) -->
+  <!-- Screen 3: The Cake -->
   <div id="screen3" class="screen">
-    <h2>Remember this?</h2>
-    <div class="polaroid">
-      <!-- Replace src with your own image path -->
-      <img src="./E110605F-7E16-411E-B69F-EB07663BDF8F.png" alt="Memory">
-      <p>Such a great day!</p>
-    </div>
-    <button class="btn" onclick="nextScreen(4)">Keep Going →</button>
+    <h2>Happy Birthday!</h2>
+    <p>Cut the cake to continue...</p>
+    <div class="cake" tabindex="0" onclick="cutCake(this)" onkeydown="handleKey(event, () => cutCake(this))">🎂</div>
   </div>
 
   <!-- Screen 4: The Personal Letter -->
