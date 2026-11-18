@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy Birthday!✨</title>
+
+  <!-- Tailwind CSS for responsive layout utilities -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Festive handwriting + clean rounded body text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Pacifico&family=Quicksand:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* =====================================================================
+       BASE & DREAMY ANIMATED PASTEL ATMOSPHERE
+       ===================================================================== */
+    :root {
+      --font-display: 'Pacifico', 'Dancing Script', cursive;
+      --font-hand: 'Dancing Script', cursive;
+      --font-body: 'Quicksand', 'Segoe UI', system-ui, sans-serif;
+      --ink-primary: #4a1e38;
+      --ink-secondary: #7c3b5e;
+      --rose-accent: #ff5c8a;
+      --peach-accent: #ff9a76;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      font-family: var(--font-body);
+      color: var(--ink-primary);
+      user-select: none;
+    }
+
+    /* Smoothly shifting dreamy pastel gradient backdrop */
+    body {
+      background: linear-gradient(
+        -45deg,
+        #ffd1dc,
+        #ffe1c6,
+        #e5d4ff,
+        #ffc4d6,
+        #ffd8e4
+      );
+      background-size: 400% 400%;
+      animation: gradientShift 16s ease-in-out infinite;
+      position: relative;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .font-display {
+      font-family: var(--font-display);
+    }
+
+    .font-hand {
+      font-family: var(--font-hand);
+    }
+
+    /* =====================================================================
+       BACKGROUND AMBIENT LAYER: BALLOONS, TWINKLING STARS & BOKEH HEARTS
+       ===================================================================== */
+    #ambient-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .twinkle-star {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffffff 20%, rgba(255, 255, 255, 0) 75%);
+      animation: twinkle var(--dur, 3s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+      opacity: 0.2;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { transform: scale(0.7); opacity: 0.2; }
+      50% { transform: scale(1.35); opacity: 0.95; }
+    }
+
+    .bokeh-heart {
+      position: absolute;
+      bottom: -60px;
+      opacity: 0;
+      filter: blur(1px);
+      animation: floatUpHeart var(--dur, 12s) linear infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    @keyframes floatUpHeart {
+      0% {
+        transform: translateY(0) translateX(0) scale(0.7) rotate(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: var(--max-opacity, 0.35);
+      }
+      85% {
+        opacity: var(--max-opacity, 0.3);
+      }
+      100% {
+        transform: translateY(-115dvh) translateX(var(--drift, 35px)) scale(1.15) rotate(22deg);
+        opacity: 0;
+      }
+    }
+
+    .ambient-balloon {
+      position: absolute;
+      bottom: -140px;
+      opacity: 0;
+      animation: floatBalloon var(--dur, 20s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    @keyframes floatBalloon {
+      0% {
+        transform: translateY(0) translateX(0) rotate(-4deg);
+        opacity: 0;
+      }
+      12% {
+        opacity: 0.52;
+      }
+      50% {
+        transform: translateY(-60dvh) translateX(var(--sway, 30px)) rotate(4deg);
+        opacity: 0.52;
+      }
+      88% {
+        opacity: 0.45;
+      }
+      100% {
+        transform: translateY(-125dvh) translateX(calc(var(--sway, 30px) * -0.7)) rotate(-3deg);
+        opacity: 0;
+      }
+    }
+
+    /* Full-screen HTML5 Canvas overlay for confetti, fireworks, hearts & sparkles */
+    #fx-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 40;
+    }
+
+    /* =====================================================================
+       TOP-RIGHT AUDIO TOGGLE & BOTTOM PROGRESS DOTS
+       ===================================================================== */
+    #audio-toggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 50;
+      width: 44px;
+      height: 44px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 6px 20px rgba(173, 73, 120, 0.16);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-primary);
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #audio-toggle:hover {
+      transform: scale(1.08);
+      background: rgba(255, 255, 255, 0.88);
+    }
+
+    #audio-toggle:active {
+      transform: scale(0.95);
+    }
+
+    #progress-dots {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 14px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      box-shadow: 0 4px 14px rgba(160, 68, 114, 0.1);
+    }
+
+    .progress-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 9999px;
+      background: rgba(124, 59, 94, 0.28);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .progress-dot.active {
+      width: 26px;
+      background: linear-gradient(90deg, #ff5c8a, #ff9a76);
+      box-shadow: 0 0 10px rgba(255, 92, 138, 0.55);
+    }
+
+    /* =====================================================================
+       SCREEN STAGE & TRANSITIONS (SCALE + FADE + SLIDE)
+       ===================================================================== */
+    #stage {
+      position: relative;
+      width: 100%;
+      height: 100dvh;
+      z-index: 10;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 18px 58px;
+      opacity: 0;
+      transform: translateY(28px) scale(0.94);
+      pointer-events: none;
+      visibility: hidden;
+      transition:
+        opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.65s;
+    }
+
+    .screen.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+      visibility: visible;
+    }
+
+    .screen.exiting {
+      opacity: 0;
+      transform: translateY(-24px) scale(1.04);
+      pointer-events: none;
+      visibility: hidden;
+    }
+
+    /* Common gentle floating header & pulsing prompts */
+    .float-heading {
+      animation: floatGentle 3.6s ease-in-out infinite;
+      text-shadow: 0 3px 16px rgba(255, 255, 255, 0.8);
+    }
+
+    @keyframes floatGentle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .bounce-in-heading {
+      opacity: 0;
+      transform: scale(0.75) translateY(-14px);
+    }
+
+    .screen.active .bounce-in-heading {
+      animation: bounceEntrance 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s forwards;
+    }
+
+    @keyframes bounceEntrance {
+      0% { opacity: 0; transform: scale(0.75) translateY(-14px); }
+      65% { opacity: 1; transform: scale(1.06) translateY(2px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .pulse-prompt {
+      animation: softPulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes softPulse {
+      0%, 100% { opacity: 0.72; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+
+    /* =====================================================================
+       SCREEN 1: CUSTOM 3D INTERACTIVE ENVELOPE
+       ===================================================================== */
+    .envelope-scene {
+      perspective: 1100px;
+      cursor: pointer;
+      padding: 20px;
+      margin: 8px 0;
+    }
+
+    .envelope-bob {
+      animation: envelopeBob 3.2s ease-in-out infinite;
+      transition: transform 0.3s ease;
+    }
+
+    .envelope-scene:hover .envelope-bob {
+      transform: scale(1.04);
+    }
+
+    .envelope-scene.opened .envelope-bob {
+      animation: none;
+    }
+
+    @keyframes envelopeBob {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+    }
+
+    .envelope-wrapper {
+      position: relative;
+      width: 268px;
+      height: 178px;
+      transform-style: preserve-3d;
+      filter: drop-shadow(0 18px 32px rgba(189, 77, 125, 0.28));
+    }
+
+    @media (min-width: 640px) {
+      .envelope-wrapper {
+        width: 300px;
+        height: 198px;
+      }
+    }
+
+    /* Warm soft halo glow behind envelope */
+    .envelope-glow {
+      position: absolute;
+      inset: -16px;
+      border-radius: 28px;
+      background: radial-gradient(circle, rgba(255, 130, 170, 0.45) 0%, rgba(255, 200, 170, 0) 72%);
+      animation: glowPulse 2.6s ease-in-out infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.65; transform: scale(0.96); }
+      50% { opacity: 1; transform: scale(1.06); }
+    }
+
+    /* Envelope back interior */
+    .env-back {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      background: linear-gradient(165deg, #f7d5de 0%, #f3becd 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.75);
+      z-index: 1;
+    }
+
+    /* Sliding Golden Birthday Invite Card tucked inside */
+    .env-card {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 12px;
+      height: 146px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #fffdf5 0%, #fff2cc 48%, #ffe5a3 100%);
+      border: 2px solid #f5cb6c;
+      box-shadow: 0 6px 18px rgba(173, 120, 34, 0.22);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      transform: translateY(0);
+      transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.26s;
+      overflow: hidden;
+    }
+
+    .env-card::after {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 1px dashed rgba(217, 155, 38, 0.55);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    .envelope-scene.opened .env-card {
+      transform: translateY(-96px) scale(1.02);
+    }
+
+    /* Front side & bottom folded flaps via crisp CSS clip-paths */
+    .env-front-pocket {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .env-flap-left {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #fff5f7 0%, #ffe3ea 100%);
+      clip-path: polygon(0 0, 52% 54%, 0 100%);
+    }
+
+    .env-flap-right {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(225deg, #fff2f5 0%, #ffdbe4 100%);
+      clip-path: polygon(100% 0, 48% 54%, 100% 100%);
+    }
+
+    .env-flap-bottom {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, #ffeef2 0%, #fff9fa 100%);
+      clip-path: polygon(0 100%, 50% 48%, 100% 100%);
+      filter: drop-shadow(0 -2px 4px rgba(180, 90, 120, 0.12));
+    }
+
+    /* Top triangular 3D flap */
+    .env-flap-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 58%;
+      transform-origin: top center;
+      transform: rotateX(0deg);
+      z-index: 5;
+      transition: transform 0.62s cubic-bezier(0.4, 0, 0.2, 1), z-index 0s linear 0.24s;
+      filter: drop-shadow(0 5px 8px rgba(173, 73, 114, 0.18));
+    }
+
+    .env-flap-top-shape {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #fff8fa 0%, #ffe6ed 100%);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-top-left-radius: 14px;
+      border-top-right-radius: 14px;
+    }
+
+    .envelope-scene.opened .env-flap-top {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    /* Glowing Pulsing Red Heart Wax Seal */
+    .wax-seal {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 28%, #ff6b8b 0%, #e62e5c 58%, #b31942 100%);
+      box-shadow:
+        0 4px 12px rgba(179, 25, 66, 0.45),
+        0 0 22px rgba(255, 77, 121, 0.55),
+        inset 0 2px 4px rgba(255, 180, 200, 0.55);
+      border: 2.5px solid rgba(255, 195, 210, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 7;
+      animation: sealPulse 1.8s ease-in-out infinite;
+      transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.28s ease;
+    }
+
+    @keyframes sealPulse {
+      0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow: 0 4px 12px rgba(179, 25, 66, 0.45), 0 0 18px rgba(255, 77, 121, 0.5);
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.1);
+        box-shadow: 0 6px 18px rgba(179, 25, 66, 0.55), 0 0 30px rgba(255, 77, 121, 0.85);
+      }
+    }
+
+    .envelope-scene.opened .wax-seal {
+      animation: none;
+      transform: translate(-50%, -50%) scale(1.65) rotate(16deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* =====================================================================
+       SCREEN 2: INTERACTIVE ANIMATED BIRTHDAY CAKE
+       ===================================================================== */
+    .cake-stage {
+      position: relative;
+      width: 270px;
+      height: 270px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin: 6px 0;
+      transition: transform 0.25s ease;
+    }
+
+    @media (min-width: 640px) {
+      .cake-stage {
+        width: 300px;
+        height: 295px;
+      }
+    }
+
+    .cake-stage:hover {
+      transform: scale(1.03);
+    }
+
+    .cake-stage:active {
+      transform: scale(0.98);
+    }
+
+    /* Warm radial glow behind flames */
+    .candle-ambient-glow {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 190px;
+      height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 224, 130, 0.68) 0%, rgba(255, 180, 120, 0.25) 45%, rgba(255, 200, 150, 0) 75%);
+      pointer-events: none;
+      animation: glowFlicker 1.9s ease-in-out infinite;
+      transition: opacity 0.5s ease;
+    }
+
+    .cake-stage.candles-out .candle-ambient-glow {
+      opacity: 0;
+    }
+
+    @keyframes glowFlicker {
+      0%, 100% { opacity: 0.85; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+    }
+
+    /* Flickering CSS flames overlaid accurately on the 3 SVG candles */
+    .flames-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .flame-holder {
+      position: absolute;
+      width: 22px;
+      height: 36px;
+      transform: translate(-50%, -100%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .flame-holder.c1 { left: 38.5%; top: 31%; }
+    .flame-holder.c2 { left: 50%;   top: 27.5%; }
+    .flame-holder.c3 { left: 61.5%; top: 31%; }
+
+    .flame {
+      width: 15px;
+      height: 26px;
+      border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+      background: radial-gradient(ellipse at 50% 72%, #fffef2 0%, #ffe066 42%, #ff922b 82%, #ff5c33 100%);
+      box-shadow: 0 0 14px 4px rgba(255, 183, 77, 0.78), 0 0 28px 6px rgba(255, 138, 101, 0.42);
+      transform-origin: bottom center;
+      animation: flameFlicker 0.24s ease-in-out infinite alternate;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    .flame-holder.c2 .flame {
+      animation-delay: -0.09s;
+      width: 16px;
+      height: 28px;
+    }
+
+    .flame-holder.c3 .flame {
+      animation-delay: -0.17s;
+    }
+
+    @keyframes flameFlicker {
+      0% { transform: scale(0.95, 1.04) skewX(-3deg); }
+      50% { transform: scale(1.04, 0.96) skewX(2.5deg); }
+      100% { transform: scale(0.98, 1.06) skewX(-1.5deg); }
+    }
+
+    .cake-stage.candles-out .flame {
+      animation: none;
+      transform: scale(0.1, 0.1) translateY(8px);
+      opacity: 0;
+    }
+
+    /* Animated rising smoke puffs when candles are blown out */
+    .smoke-puff {
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 0%, rgba(220, 210, 225, 0.45) 55%, rgba(255, 255, 255, 0) 100%);
+      opacity: 0;
+      transform: translate(-50%, 0) scale(0.4);
+      pointer-events: none;
+    }
+
+    .cake-stage.candles-out .smoke-puff.p1 {
+      animation: riseSmokeLeft 1.4s ease-out 0.05s forwards;
+    }
+
+    .cake-stage.candles-out .smoke-puff.p2 {
+      animation: riseSmokeRight 1.65s ease-out 0.22s forwards;
+    }
+
+    @keyframes riseSmokeLeft {
+      0% { opacity: 0; transform: translate(-50%, 0) scale(0.4); }
+      20% { opacity: 0.85; }
+      100% { opacity: 0; transform: translate(-115%, -68px) scale(2.3); }
+    }
+
+    @keyframes riseSmokeRight {
+      0% { opacity: 0; transform: translate(-50%, -4px) scale(0.35); }
+      25% { opacity: 0.72; }
+      100% { opacity: 0; transform: translate(35%, -82px) scale(2.6); }
+    }
+
+    /* Animated cake slice pop-out + sparkle cut sweep */
+    #cake-slice-group {
+      transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-origin: center;
+    }
+
+    .cake-stage.cake-cut #cake-slice-group {
+      transform: translate(16px, 7px) rotate(5deg);
+    }
+
+    .cut-sparkle-sweep {
+      position: absolute;
+      top: 40%;
+      left: 20%;
+      width: 65%;
+      height: 6px;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0), #fff9db, #ffd43b, #ff85a1, rgba(255,255,255,0));
+      box-shadow: 0 0 18px #ffd43b, 0 0 28px #ffffff;
+      opacity: 0;
+      transform: rotate(-32deg) scaleX(0.1);
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    .cake-stage.cake-cut .cut-sparkle-sweep {
+      animation: cutSweep 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes cutSweep {
+      0% { opacity: 0; transform: translate(-35px, -25px) rotate(-32deg) scaleX(0.2); }
+      30% { opacity: 1; transform: translate(0, 0) rotate(-32deg) scaleX(1.1); }
+      100% { opacity: 0; transform: translate(42px, 28px) rotate(-32deg) scaleX(0.35); }
+    }
+
+    /* =====================================================================
+       SCREEN 3: INTERACTIVE MULTI-PHOTO POLAROID DECK / STACK
+       ===================================================================== */
+    #screen3 {
+      padding: 16px 16px 56px;
+      gap: 4px;
+    }
+
+    .polaroid-deck-stage {
+      perspective: 1100px;
+      position: relative;
+      width: min(305px, 84vw);
+      height: min(395px, 49dvh);
+      min-height: 320px;
+      margin: 10px 0 12px;
+      touch-action: none; /* Enables crisp touch drag/swipe without scrolling */
+    }
+
+    /* Gentle pendulum entrance when Screen 3 becomes active */
+    .deck-entrance-wrap {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-origin: top center;
+    }
+
+    .screen.active .deck-entrance-wrap {
+      animation: deckPendulum 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes deckPendulum {
+      0% { transform: rotate(8deg) translateY(-18px) scale(0.95); opacity: 0; }
+      35% { transform: rotate(-4deg) translateY(0) scale(1); opacity: 1; }
+      68% { transform: rotate(2deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* Individual Polaroid card inside the 3D stack (strict vertical flex, never clips caption) */
+    .polaroid-card {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #fffdfb;
+      padding: 12px 12px 14px 12px;
+      border-radius: 10px;
+      overflow: visible;
+      box-shadow:
+        0 18px 34px rgba(130, 52, 92, 0.2),
+        0 4px 12px rgba(0, 0, 0, 0.08);
+      transform-style: preserve-3d;
+      transform-origin: center center;
+      transition:
+        transform 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.42s ease,
+        box-shadow 0.3s ease,
+        filter 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      will-change: transform, opacity;
+      pointer-events: none;
+    }
+
+    .polaroid-card.is-top {
+      pointer-events: auto;
+      cursor: grab;
+      box-shadow:
+        0 22px 42px rgba(130, 52, 92, 0.26),
+        0 6px 14px rgba(0, 0, 0, 0.09);
+    }
+
+    .polaroid-card.is-top:active,
+    .polaroid-card.is-dragging {
+      cursor: grabbing;
+    }
+
+    .polaroid-card.is-dragging {
+      transition: box-shadow 0.2s ease !important;
+      box-shadow:
+        0 28px 54px rgba(130, 52, 92, 0.32),
+        0 10px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .polaroid-card.no-transition {
+      transition: none !important;
+    }
+
+    /* Fly-off toss animations when flipping to next or previous card */
+    .polaroid-card.tossing-left {
+      transition: transform 0.36s cubic-bezier(0.32, 0, 0.67, 0.2), opacity 0.32s ease !important;
+      transform: translate3d(-340px, -22px, 0) rotate(-22deg) scale(0.92) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    .polaroid-card.tossing-right {
+      transition: transform 0.36s cubic-bezier(0.32, 0, 0.67, 0.2), opacity 0.32s ease !important;
+      transform: translate3d(340px, -22px, 0) rotate(22deg) scale(0.92) !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    /* Colored translucent striped washi tape variants */
+    .washi-tape {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+      width: 90px;
+      height: 25px;
+      backdrop-filter: blur(2px);
+      border-radius: 3px;
+      box-shadow: 0 2px 6px rgba(150, 60, 95, 0.14);
+      z-index: 6;
+      pointer-events: none;
+    }
+
+    .washi-tape.tape-pink {
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 148, 184, 0.64),
+        rgba(255, 148, 184, 0.64) 8px,
+        rgba(255, 214, 228, 0.72) 8px,
+        rgba(255, 214, 228, 0.72) 16px
+      );
+    }
+
+    .washi-tape.tape-lavender {
+      transform: translateX(-50%) rotate(2.5deg);
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(192, 152, 255, 0.62),
+        rgba(192, 152, 255, 0.62) 8px,
+        rgba(232, 214, 255, 0.72) 8px,
+        rgba(232, 214, 255, 0.72) 16px
+      );
+    }
+
+    .washi-tape.tape-peach {
+      transform: translateX(-50%) rotate(-2deg);
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 173, 130, 0.64),
+        rgba(255, 173, 130, 0.64) 8px,
+        rgba(255, 226, 204, 0.74) 8px,
+        rgba(255, 226, 204, 0.74) 16px
+      );
+    }
+
+    .washi-tape.tape-mint {
+      transform: translateX(-50%) rotate(3deg);
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(128, 224, 196, 0.62),
+        rgba(128, 224, 196, 0.62) 8px,
+        rgba(208, 247, 234, 0.74) 8px,
+        rgba(208, 247, 234, 0.74) 16px
+      );
+    }
+
+    .polaroid-photo-frame {
+      position: relative;
+      width: 100%;
+      flex: 1 1 0;
+      min-height: 0;
+      border-radius: 5px;
+      overflow: hidden;
+      background: #ffeef4;
+      box-shadow: inset 0 0 0 1px rgba(120, 60, 85, 0.08);
+    }
+
+    /* Soft ambient blurred backdrop fills extra space smoothly for any aspect ratio */
+    .polaroid-photo-frame .photo-bg-blur {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(18px) saturate(1.15);
+      transform: scale(1.18);
+      opacity: 0.6;
+      z-index: 1;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Crisp foreground photo (defaults to contain so heads/edges are never cropped) */
+    .polaroid-photo-frame .photo-main {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Occasional soft diagonal light sheen across the active top photo */
+    .polaroid-sheen {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      background: linear-gradient(
+        118deg,
+        rgba(255, 255, 255, 0) 28%,
+        rgba(255, 255, 255, 0.52) 50%,
+        rgba(255, 255, 255, 0) 72%
+      );
+      transform: translateX(-140%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Handwritten caption inside each Polaroid (no clipping on cursive descenders or emojis) */
+    .polaroid-caption {
+      flex: 0 0 auto;
+      overflow: visible;
+      padding: 10px 6px 2px 6px;
+      margin: 0;
+      font-family: var(--font-hand);
+      font-size: clamp(1.35rem, 4.5vw, 1.75rem);
+      line-height: 1.35;
+      text-align: center;
+      color: #68304f;
+      word-break: break-word;
+    }
+
+    /* Glassmorphism Deck Navigation Pill Controls & Dots */
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    @keyframes photoSheen {
+      0%, 60% { transform: translateX(-140%); }
+      82%, 100% { transform: translateX(145%); }
+    }
+
+    /* Floating corner stickers around Polaroid */
+    .polaroid-sticker {
+      position: absolute;
+      font-size: 21px;
+      pointer-events: none;
+      filter: drop-shadow(0 4px 8px rgba(160, 60, 100, 0.25));
+      animation: stickerFloat 3s ease-in-out infinite;
+      z-index: 7;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .polaroid-card.is-top .polaroid-sticker {
+      opacity: 1;
+    }
+
+    .sticker-tl { top: -11px; left: -13px; animation-delay: 0s; }
+    .sticker-tr { top: 8px; right: -15px; animation-delay: 0.7s; font-size: 23px; }
+    .sticker-bl { bottom: 38px; left: -13px; animation-delay: 1.3s; font-size: 19px; }
+    .sticker-br { bottom: -9px; right: -12px; animation-delay: 0.4s; font-size: 22px; }
+
+    @keyframes stickerFloat {
+      0%, 100% { transform: translateY(0) rotate(-6deg) scale(1); }
+      50% { transform: translateY(-6px) rotate(8deg) scale(1.12); }
+    }
+
+    /* Handwritten caption inside each Polaroid */
+    .polaroid-caption {
+      font-family: var(--font-hand);
+      font-size: 1.48rem;
+      line-height: 1.15;
+      text-align: center;
+      color: #68304f;
+      margin: 11px 4px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @media (min-width: 640px) {
+      .polaroid-caption {
+        font-size: 1.65rem;
+        margin-top: 13px;
+      }
+    }
+
+    /* Glassmorphism Deck Navigation Pill Controls & Dots */
+    .deck-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .deck-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 7px 15px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.68);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      color: var(--ink-primary);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(160, 68, 114, 0.14);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .deck-nav-btn:hover {
+      transform: translateY(-2px) scale(1.04);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 8px 18px rgba(160, 68, 114, 0.2);
+    }
+
+    .deck-nav-btn:active {
+      transform: scale(0.95);
+    }
+
+    .deck-counter {
+      min-width: 62px;
+      text-align: center;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.52);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.78);
+      font-size: 13px;
+      font-weight: 700;
+      color: #6b2b4e;
+      letter-spacing: 0.04em;
+    }
+
+    .deck-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    /* ... existing code ... -->
+  <script>
+    /* =========================================================================
+       ★ EASY-TO-EDIT PHOTO MEMORIES LIST ★
+       Add, remove, or reorder as many photos as you like!
+       - Put your photo files in the same folder as this HTML file.
+       - Available tapeColor options: 'pink' | 'lavender' | 'peach' | 'mint'
+       - Any emoji works for sticker!
+       - Optional fit: 'contain' (default, shows 100% of photo with blurred backdrop)
+                       or 'cover' (fills the entire frame edge-to-edge)
+       - Optional position: 'center' (default), 'top', 'center 20%', etc.
+       ========================================================================= */
+    const MEMORIES = [
+      {
+        src: './E110605F-7E16-411E-B69F-EB07663BDF8F.png',
+        caption: 'Such a great day! ✨',
+        tapeColor: 'pink',
+        sticker: '💖',
+        fit: 'contain',
+        position: 'center'
+      },
+      {
+        src: './87259B64-F0ED-400C-BB34-1A80180414B0.jpeg',
+        caption: 'The Trio 💖',
+        tapeColor: 'lavender',
+        sticker: '🌸',
+        fit: 'contain',
+        position: 'center'
+      },
+      {
+        src: './IMG_6778.jpeg',
+        caption: 'Thumb Queen 😂',
+        tapeColor: 'peach',
+        sticker: '⭐',
+        fit: 'contain',
+        position: 'center'
+      },
+      {
+        src: './photo4.jpg',
+        caption: './IMG_6940.jpeg 🌸',
+        tapeColor: 'mint',
+        sticker: '🎀',
+        fit: 'contain',
+        position: 'center'
+      }
+    ];
+
+    /* =========================================================================
+       1. DISTINCT CHARMING PASTEL SVG FALLBACK ILLUSTRATIONS
+       Automatically shown if a local image file isn't present in preview,
+       while seamlessly loading your real photo when saved in the same folder.
+       ========================================================================= */
+    function createMemoryFallbackUri(src, index) {
+      const rawName = (src || 'photo.jpg').split('/').pop();
+      // Keep long filenames tidy inside the SVG banner while showing exact short names
+      const displayName = rawName.length > 22
+        ? `${rawName.slice(0, 10)}...${rawName.slice(-6)}`
+        : rawName;
+      const labelText = `Add ${displayName} here ✨`;
+      const variant = index % 4;
+
+      let svgContent = '';
+
+      if (variant === 0) {
+        // Variant 0: Dreamy Sunset & Floating Hearts
+        svgContent = [
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 370">',
+          '  <defs>',
+          '    <linearGradient id="sky0" x1="0" y1="0" x2="0" y2="1">',
+          '      <stop offset="0%" stop-color="#c8b6ff"/>',
+          '      <stop offset="44%" stop-color="#ffc2d4"/>',
+          '      <stop offset="80%" stop-color="#ffd6a5"/>',
+          '      <stop offset="100%" stop-color="#fff1cc"/>',
+          '    </linearGradient>',
+          '    <radialGradient id="sun0" cx="50%" cy="58%" r="36%">',
+          '      <stop offset="0%" stop-color="#fffdf2" stop-opacity="0.96"/>',
+          '      <stop offset="55%" stop-color="#ffe09e" stop-opacity="0.55"/>',
+          '      <stop offset="100%" stop-color="#ffb5c8" stop-opacity="0"/>',
+          '    </radialGradient>',
+          '  </defs>',
+          '  <rect width="400" height="370" fill="url(#sky0)"/>',
+          '  <circle cx="200" cy="215" r="130" fill="url(#sun0)"/>',
+          '  <circle cx="200" cy="215" r="44" fill="#fff8e1" opacity="0.9"/>',
+          '  <g fill="#ffffff" opacity="0.6">',
+          '    <ellipse cx="92" cy="112" rx="46" ry="17"/>',
+          '    <ellipse cx="120" cy="106" rx="30" ry="14"/>',
+          '    <ellipse cx="308" cy="138" rx="52" ry="18"/>',
+          '    <ellipse cx="278" cy="132" rx="32" ry="14"/>',
+          '  </g>',
+          '  <path d="M0 280 Q105 242 205 274 T400 264 L400 370 L0 370 Z" fill="#d88cb3" opacity="0.35"/>',
+          '  <path d="M0 305 Q130 275 245 300 T400 292 L400 370 L0 370 Z" fill="#b36a92" opacity="0.32"/>',
+          '  <g fill="#ff5c8a" opacity="0.92">',
+          '    <path transform="translate(154 140) scale(1.15)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>',
+          '    <path transform="translate(216 116) scale(0.85) rotate(12)" fill="#ff85a1" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>',
+          '  </g>',
+          '  <g fill="#ffffff">',
+          '    <path d="M98 66 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3z" opacity="0.95"/>',
+          '    <path d="M312 78 l2.5 7 7 2.5 -7 2.5 -2.5 7 -2.5 -7 -7 -2.5 7 -2.5z" opacity="0.9"/>',
+          '  </g>',
+          '  <rect x="44" y="308" width="312" height="36" rx="18" fill="#ffffff" fill-opacity="0.78"/>',
+          `  <text x="200" y="331" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="14.5" font-weight="700" fill="#6b2d4f">${labelText}</text>`,
+          '</svg>'
+        ].join('');
+      } else if (variant === 1) {
+        // Variant 1: Starry Pastel Twilight Night
+        svgContent = [
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 370">',
+          '  <defs>',
+          '    <linearGradient id="sky1" x1="0" y1="0" x2="1" y2="1">',
+          '      <stop offset="0%" stop-color="#a899f5"/>',
+          '      <stop offset="52%" stop-color="#d7b9ff"/>',
+          '      <stop offset="100%" stop-color="#ffd1e6"/>',
+          '    </linearGradient>',
+          '  </defs>',
+          '  <rect width="400" height="370" fill="url(#sky1)"/>',
+          '  <circle cx="200" cy="168" r="95" fill="#ffffff" opacity="0.16"/>',
+          '  <!-- Glowing Crescent Moon -->',
+          '  <path d="M225 102 A56 56 0 1 0 245 206 A44 44 0 1 1 225 102 Z" fill="#fff9d6"/>',
+          '  <!-- Shooting Star Trail -->',
+          '  <path d="M74 118 Q135 92 178 96" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" fill="none" opacity="0.72"/>',
+          '  <path d="M180 86 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3z" fill="#fff9db"/>',
+          '  <!-- Twinkling Stars -->',
+          '  <g fill="#ffffff">',
+          '    <path d="M102 184 l3.2 10 10 3.2 -10 3.2 -3.2 10 -3.2 -10 -10 -3.2 10 -3.2z" opacity="0.95"/>',
+          '    <path d="M302 126 l2.8 8 8 2.8 -8 2.8 -2.8 8 -2.8 -8 -8 -2.8 8 -2.8z" opacity="0.9"/>',
+          '    <path d="M294 218 l2.4 7 7 2.4 -7 2.4 -2.4 7 -2.4 -7 -7 -2.4 7 -2.4z" opacity="0.88"/>',
+          '    <circle cx="136" cy="70" r="3" opacity="0.85"/>',
+          '    <circle cx="268" cy="76" r="2.6" opacity="0.8"/>',
+          '    <circle cx="80" cy="242" r="3" opacity="0.75"/>',
+          '    <circle cx="332" cy="176" r="2.5" opacity="0.8"/>',
+          '  </g>',
+          '  <!-- Soft Dreamy Clouds -->',
+          '  <g fill="#ffffff" opacity="0.52">',
+          '    <ellipse cx="95" cy="272" rx="64" ry="22"/>',
+          '    <ellipse cx="145" cy="278" rx="45" ry="18"/>',
+          '    <ellipse cx="308" cy="274" rx="68" ry="22"/>',
+          '  </g>',
+          '  <rect x="44" y="308" width="312" height="36" rx="18" fill="#ffffff" fill-opacity="0.82"/>',
+          `  <text x="200" y="331" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="14.5" font-weight="700" fill="#5e2a6e">${labelText}</text>`,
+          '</svg>'
+        ].join('');
+      } else if (variant === 2) {
+        // Variant 2: Pastel Balloons Celebration
+        svgContent = [
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 370">',
+          '  <defs>',
+          '    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">',
+          '      <stop offset="0%" stop-color="#ffe0c2"/>',
+          '      <stop offset="55%" stop-color="#ffd6e8"/>',
+          '      <stop offset="100%" stop-color="#fff4db"/>',
+          '    </linearGradient>',
+          '  </defs>',
+          '  <rect width="400" height="370" fill="url(#sky2)"/>',
+          '  <!-- Confetti Dots -->',
+          '  <g opacity="0.75">',
+          '    <circle cx="76" cy="88" r="5" fill="#ff7aa2"/>',
+          '    <circle cx="326" cy="96" r="6" fill="#a78bfa"/>',
+          '    <circle cx="104" cy="228" r="5" fill="#63e6be"/>',
+          '    <circle cx="308" cy="214" r="5" fill="#ffd43b"/>',
+          '    <circle cx="204" cy="54" r="4" fill="#ff922b"/>',
+          '  </g>',
+          '  <!-- Balloon Strings -->',
+          '  <path d="M136 184 Q152 240 198 286" stroke="#b06d88" stroke-width="2" fill="none" opacity="0.6"/>',
+          '  <path d="M262 184 Q246 240 200 286" stroke="#b06d88" stroke-width="2" fill="none" opacity="0.6"/>',
+          '  <path d="M200 172 Q204 232 200 286" stroke="#b06d88" stroke-width="2" fill="none" opacity="0.6"/>',
+          '  <!-- Left Lavender Balloon -->',
+          '  <ellipse cx="136" cy="138" rx="38" ry="46" fill="#cdb4db"/>',
+          '  <ellipse cx="122" cy="122" rx="9" ry="15" transform="rotate(-18 122 122)" fill="#ffffff" opacity="0.52"/>',
+          '  <!-- Right Peach Balloon -->',
+          '  <ellipse cx="262" cy="138" rx="38" ry="46" fill="#ffaf87"/>',
+          '  <ellipse cx="248" cy="122" rx="9" ry="15" transform="rotate(-18 248 122)" fill="#ffffff" opacity="0.52"/>',
+          '  <!-- Center Rose Balloon -->',
+          '  <ellipse cx="200" cy="120" rx="44" ry="52" fill="#ff7597"/>',
+          '  <ellipse cx="184" cy="102" rx="11" ry="18" transform="rotate(-18 184 102)" fill="#ffffff" opacity="0.52"/>',
+          '  <path d="M196 172 L204 172 L200 179 Z" fill="#ff7597"/>',
+          '  <rect x="44" y="308" width="312" height="36" rx="18" fill="#ffffff" fill-opacity="0.82"/>',
+          `  <text x="200" y="331" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="14.5" font-weight="700" fill="#7a3250">${labelText}</text>`,
+          '</svg>'
+        ].join('');
+      } else {
+        // Variant 3: Cute Pastel Instant Camera & Hearts
+        svgContent = [
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 370">',
+          '  <defs>',
+          '    <linearGradient id="sky3" x1="0" y1="0" x2="1" y2="1">',
+          '      <stop offset="0%" stop-color="#c9f5e6"/>',
+          '      <stop offset="50%" stop-color="#e9defa"/>',
+          '      <stop offset="100%" stop-color="#ffd6e5"/>',
+          '    </linearGradient>',
+          '  </defs>',
+          '  <rect width="400" height="370" fill="url(#sky3)"/>',
+          '  <!-- Floating Sparkles & Hearts Above Camera -->',
+          '  <g fill="#ff6b93" opacity="0.9">',
+          '    <path transform="translate(178 62) scale(1.05)" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>',
+          '    <path transform="translate(232 82) scale(0.75) rotate(14)" fill="#ff8fab" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>',
+          '    <path transform="translate(132 84) scale(0.75) rotate(-14)" fill="#b388ff" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>',
+          '  </g>',
+          '  <!-- Cute Kawaii Instant Camera -->',
+          '  <rect x="116" y="136" width="168" height="128" rx="28" fill="#ffffff" stroke="#f7b2c8" stroke-width="4"/>',
+          '  <rect x="116" y="182" width="168" height="34" fill="#ffe3ed"/>',
+          '  <rect x="140" y="122" width="38" height="16" rx="8" fill="#ff9ebb"/>',
+          '  <rect x="234" y="150" width="28" height="16" rx="6" fill="#ffd166"/>',
+          '  <circle cx="200" cy="200" r="36" fill="#7c3b5e"/>',
+          '  <circle cx="200" cy="200" r="24" fill="#a86487"/>',
+          '  <circle cx="200" cy="200" r="13" fill="#4a1e38"/>',
+          '  <circle cx="192" cy="191" r="5" fill="#ffffff" opacity="0.88"/>',
+          '  <circle cx="210" cy="208" r="2.5" fill="#ffffff" opacity="0.7"/>',
+          '  <circle cx="144" cy="160" r="7" fill="#ff7597"/>',
+          '  <rect x="44" y="308" width="312" height="36" rx="18" fill="#ffffff" fill-opacity="0.84"/>',
+          `  <text x="200" y="331" text-anchor="middle" font-family="Quicksand, sans-serif" font-size="14.5" font-weight="700" fill="#4f325c">${labelText}</text>`,
+          '</svg>'
+        ].join('');
+      }
+
+      return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgContent);
+    }
+
+    /* =========================================================================
+       2. AMBIENT BACKGROUND GENERATOR (BALLOONS, STARS, BOKEH HEARTS)
+       ========================================================================= */
+    (function createAmbientBackground() {
+      const container = document.getElementById('ambient-bg');
+
+      // Generate twinkling stars
+      for (let i = 0; i < 28; i++) {
+        const star = document.createElement('div');
+        star.className = 'twinkle-star';
+        const size = 4 + Math.random() * 8;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.setProperty('--dur', `${2.2 + Math.random() * 3.4}s`);
+        star.style.setProperty('--delay', `${Math.random() * 3.5}s`);
+        container.appendChild(star);
+      }
+
+      // Generate rising soft bokeh hearts
+      const heartColors = ['#ff85a1', '#ffb3c6', '#ffd6a5', '#d8b4fe', '#ffffff'];
+      for (let i = 0; i < 16; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'bokeh-heart';
+        const size = 16 + Math.random() * 22;
+        const color = heartColors[i % heartColors.length];
+        heart.style.left = `${Math.random() * 96}%`;
+        heart.style.setProperty('--dur', `${10 + Math.random() * 11}s`);
+        heart.style.setProperty('--delay', `${-Math.random() * 16}s`);
+        heart.style.setProperty('--drift', `${(Math.random() - 0.5) * 80}px`);
+        heart.style.setProperty('--max-opacity', `${0.22 + Math.random() * 0.28}`);
+        heart.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="${color}"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+        container.appendChild(heart);
+      }
+
+      // Generate floating translucent pastel balloons
+      const balloonPalette = ['#ff9ebb', '#ffbe98', '#cdb4db', '#ffc8dd', '#bde0fe', '#ffd6e0'];
+      for (let i = 0; i < 8; i++) {
+        const balloon = document.createElement('div');
+        balloon.className = 'ambient-balloon';
+        const width = 44 + Math.random() * 24;
+        const height = width * 1.45;
+        const fill = balloonPalette[i % balloonPalette.length];
+        balloon.style.left = `${4 + (i * 12) + Math.random() * 6}%`;
+        balloon.style.setProperty('--dur', `${17 + Math.random() * 10}s`);
+        balloon.style.setProperty('--delay', `${-Math.random() * 20}s`);
+        balloon.style.setProperty('--sway', `${(i % 2 === 0 ? 1 : -1) * (20 + Math.random() * 25)}px`);
+        balloon.innerHTML = `
+          <svg width="${width}" height="${height}" viewBox="0 0 60 95" fill="none">
+            <ellipse cx="30" cy="34" rx="24" ry="29" fill="${fill}" fill-opacity="0.72"/>
+            <ellipse cx="22" cy="24" rx="6" ry="10" transform="rotate(-18 22 24)" fill="#ffffff" fill-opacity="0.45"/>
+            <polygon points="27,63 33,63 30,68" fill="${fill}" fill-opacity="0.8"/>
+            <path d="M30 68 Q26 78 32 85 T29 95" stroke="rgba(160, 82, 118, 0.35)" stroke-width="1.4" fill="none"/>
+          </svg>
+        `;
+        container.appendChild(balloon);
+      }
+    })();
+
+    /* =========================================================================
+       3. WEB AUDIO API SYNTHESIZER (MUSIC-BOX MELODY + CELEBRATORY CHIMES)
+       Zero external audio URLs; starts softly after the first user tap.
+       ========================================================================= */
+    const SoundEngine = (() => {
+      let ctx = null;
+      let isMuted = false;
+      let melodyStarted = false;
+      let melodyTimer = null;
+      let melodyToken = 0;
+
+      // Gentle "Happy Birthday" notes: [frequency Hz, beats]
+      const HAPPY_BIRTHDAY_NOTES = [
+        [261.63, 0.75], [261.63, 0.25], [293.66, 1.0], [261.63, 1.0], [349.23, 1.0], [329.63, 2.0],
+        [261.63, 0.75], [261.63, 0.25], [293.66, 1.0], [261.63, 1.0], [392.00, 1.0], [349.23, 2.0],
+        [261.63, 0.75], [261.63, 0.25], [523.25, 1.0], [440.00, 1.0], [349.23, 1.0], [329.63, 1.0], [293.66, 1.8],
+        [466.16, 0.75], [466.16, 0.25], [440.00, 1.0], [349.23, 1.0], [392.00, 1.0], [349.23, 2.4]
+      ];
+
+      function ensureContext() {
+        try {
+          if (!ctx) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return null;
+            ctx = new AudioCtx();
+          }
+          if (ctx.state === 'suspended') {
+            ctx.resume();
+          }
+          return ctx;
+        } catch (err) {
+          return null;
+        }
+      }
+
+      // Soft music-box bell tone
+      function playBellNote(freq, duration = 0.7, volume = 0.055, delaySec = 0) {
+        if (isMuted) return;
+        const audio = ensureContext();
+        if (!audio) return;
+
+        try {
+          const now = audio.currentTime + delaySec;
+          const osc = audio.createOscillator();
+          const harmonic = audio.createOscillator();
+          const gain = audio.createGain();
+          const harmonicGain = audio.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now);
+
+          harmonic.type = 'triangle';
+          harmonic.frequency.setValueAtTime(freq * 2, now);
+
+          gain.gain.setValueAtTime(0.0001, now);
+          gain.gain.exponentialRampToValueAtTime(volume, now + 0.018);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+          harmonicGain.gain.setValueAtTime(0.0001, now);
+          harmonicGain.gain.exponentialRampToValueAtTime(volume * 0.24, now + 0.015);
+          harmonicGain.gain.exponentialRampToValueAtTime(0.0001, now + duration * 0.65);
+
+          osc.connect(gain);
+          harmonic.connect(harmonicGain);
+          gain.connect(audio.destination);
+          harmonicGain.connect(audio.destination);
+
+          osc.start(now);
+          harmonic.start(now);
+          osc.stop(now + duration + 0.05);
+          harmonic.stop(now + duration + 0.05);
+        } catch (err) {
+          // Safely ignore audio scheduling errors
+        }
+      }
+
+      // Soft airy paper whoosh + delicate chime when flipping Polaroid photos
+      function playCardFlip() {
+        if (isMuted) return;
+        const audio = ensureContext();
+        if (!audio) return;
+
+        try {
+          // Short filtered white-noise breeze for a tactile card whoosh
+          const sampleRate = audio.sampleRate;
+          const length = Math.floor(sampleRate * 0.13);
+          const buffer = audio.createBuffer(1, length, sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < length; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.sin((i / length) * Math.PI);
+          }
+
+          const noise = audio.createBufferSource();
+          noise.buffer = buffer;
+
+          const filter = audio.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(1100, audio.currentTime);
+          filter.frequency.exponentialRampToValueAtTime(2400, audio.currentTime + 0.12);
+          filter.Q.value = 1.4;
+
+          const gain = audio.createGain();
+          gain.gain.setValueAtTime(0.001, audio.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.06, audio.currentTime + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.13);
+
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(audio.destination);
+          noise.start(audio.currentTime);
+
+          // Tiny sweet sparkle interval
+          playBellNote(880, 0.32, 0.042, 0.01);
+          playBellNote(1174.66, 0.42, 0.038, 0.055);
+        } catch (err) {
+          // Safely ignore audio errors
+        }
+      }
+
+      function scheduleMelodyStep(index, token) {
+        if (token !== melodyToken || isMuted || !melodyStarted) return;
+
+        if (index >= HAPPY_BIRTHDAY_NOTES.length) {
+          // Calm pause before looping gently
+          melodyTimer = setTimeout(() => scheduleMelodyStep(0, token), 3200);
+          return;
+        }
+
+        const [freq, beats] = HAPPY_BIRTHDAY_NOTES[index];
+        const beatMs = 460;
+        playBellNote(freq * 2, Math.max(0.55, (beats * beatMs) / 900), 0.042);
+
+        melodyTimer = setTimeout(() => {
+          scheduleMelodyStep(index + 1, token);
+        }, beats * beatMs);
+      }
+
+      function startMelodyIfReady() {
+        ensureContext();
+        if (melodyStarted || isMuted) return;
+        melodyStarted = true;
+        melodyToken++;
+        scheduleMelodyStep(0, melodyToken);
+      }
+
+      function stopMelody() {
+        melodyToken++;
+        if (melodyTimer) {
+          clearTimeout(melodyTimer);
+          melodyTimer = null;
+        }
+      }
+
+      function toggleMute() {
+        isMuted = !isMuted;
+        const onIcon = document.getElementById('icon-sound-on');
+        const offIcon = document.getElementById('icon-sound-off');
+
+        if (isMuted) {
+          onIcon.classList.add('hidden');
+          offIcon.classList.remove('hidden');
+          stopMelody();
+        } else {
+          onIcon.classList.remove('hidden');
+          offIcon.classList.add('hidden');
+          ensureContext();
+          if (melodyStarted) {
+            melodyToken++;
+            scheduleMelodyStep(0, melodyToken);
+          } else {
+            startMelodyIfReady();
+          }
+        }
+        return isMuted;
+      }
+
+      // Celebratory chimes for interactions
+      function playChime(type = 'sparkle') {
+        if (isMuted) return;
+        ensureContext();
+        if (type === 'envelope') {
+          [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => playBellNote(f, 0.75, 0.075, i * 0.07));
+        } else if (type === 'wish') {
+          [587.33, 739.99, 880.0, 1174.66, 1479.98].forEach((f, i) => playBellNote(f, 0.85, 0.068, i * 0.065));
+        } else if (type === 'celebrate') {
+          [523.25, 659.25, 783.99, 1046.5, 1318.5, 1567.98].forEach((f, i) => playBellNote(f, 0.9, 0.078, i * 0.055));
+        } else if (type === 'flip') {
+          playCardFlip();
+        } else {
+          [783.99, 1046.5, 1318.5].forEach((f, i) => playBellNote(f, 0.55, 0.055, i * 0.05));
+        }
+      }
+
+      return {
+        startMelodyIfReady,
+        toggleMute,
+        playChime
+      };
+    })();
+
+    document.getElementById('audio-toggle').addEventListener('click', () => {
+      SoundEngine.toggleMute();
+    });
+
+    /* =========================================================================
+       4. FULL-SCREEN HTML5 CANVAS PARTICLE ENGINE
+       Handles confetti cannons, colorful fireworks bursts, floating hearts,
+       golden wish sparkles, and mouse/touch sparkle trails.
+       ========================================================================= */
+    const ParticleFX = (() => {
+      const canvas = document.getElementById('fx-canvas');
+      const ctx = canvas.getContext('2d');
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+      let animStarted = false;
+
+      const particles = [];
+      const MAX_PARTICLES = 420;
+
+      const COLORS = [
+        '#ff5c8a', '#ff85a1', '#ffb3c6', '#ffd166',
+        '#ff9a76', '#a78bfa', '#60d394', '#74c0fc', '#ffffff'
+      ];
+
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+
+      function pushParticle(p) {
+        if (particles.length >= MAX_PARTICLES) {
+          particles.shift();
+        }
+        particles.push(p);
+      }
+
+      // Draw a cute canvas heart centered at (0, 0)
+      function drawHeart(c, size) {
+        c.beginPath();
+        const topCurve = size * 0.3;
+        c.moveTo(0, topCurve);
+        c.bezierCurveTo(0, 0, -size / 2, 0, -size / 2, topCurve);
+        c.bezierCurveTo(-size / 2, (size + topCurve) / 2, 0, (size + topCurve) / 1.4, 0, size);
+        c.bezierCurveTo(0, (size + topCurve) / 1.4, size / 2, (size + topCurve) / 2, size / 2, topCurve);
+        c.bezierCurveTo(size / 2, 0, 0, 0, 0, topCurve);
+        c.closePath();
+        c.fill();
+      }
+
+      // Draw a 4-point glowing star sparkle
+      function drawSparkle(c, r) {
+        c.beginPath();
+        for (let i = 0; i < 8; i++) {
+          const rad = i % 2 === 0 ? r : r * 0.32;
+          const angle = (i * Math.PI) / 4;
+          const x = Math.cos(angle) * rad;
+          const y = Math.sin(angle) * rad;
+          if (i === 0) c.moveTo(x, y);
+          else c.lineTo(x, y);
+        }
+        c.closePath();
+        c.fill();
+      }
+
+      // Confetti cannon burst from a given coordinate
+      function burstConfetti(x = width / 2, y = height / 2, count = 65) {
+        for (let i = 0; i < count; i++) {
+          const angle = -Math.PI / 2 + (Math.random() - 0.5) * 2.4;
+          const speed = 4 + Math.random() * 9.5;
+          pushParticle({
+            type: 'confetti',
+            x,
+            y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 2,
+            gravity: 0.16 + Math.random() * 0.08,
+            drag: 0.985,
+            size: 6 + Math.random() * 6,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            rot: Math.random() * Math.PI * 2,
+            vRot: (Math.random() - 0.5) * 0.24,
+            tilt: Math.random() * Math.PI,
+            vTilt: 0.12 + Math.random() * 0.14,
+            life: 1,
+            decay: 0.008 + Math.random() * 0.007
+          });
+        }
+      }
+
+      // Colorful radial fireworks burst
+      function burstFirework(x = width * (0.2 + Math.random() * 0.6), y = height * (0.18 + Math.random() * 0.35), count = 42) {
+        const baseColor = COLORS[Math.floor(Math.random() * (COLORS.length - 1))];
+        const altColor = COLORS[Math.floor(Math.random() * COLORS.length)];
+        for (let i = 0; i < count; i++) {
+          const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.18;
+          const speed = 2.2 + Math.random() * 5.8;
+          pushParticle({
+            type: 'firework',
+            x,
+            y,
+            px: x,
+            py: y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            gravity: 0.065,
+            drag: 0.955,
+            size: 2.2 + Math.random() * 2.4,
+            color: i % 3 === 0 ? '#ffffff' : (i % 2 === 0 ? baseColor : altColor),
+            life: 1,
+            decay: 0.015 + Math.random() * 0.012
+          });
+        }
+      }
+
+      // Burst of floating hearts
+      function burstHearts(x = width / 2, y = height / 2, count = 20) {
+        const heartPalette = ['#ff4d6d', '#ff758f', '#ff8fab', '#ffb3c6', '#ffd166'];
+        for (let i = 0; i < count; i++) {
+          const angle = -Math.PI / 2 + (Math.random() - 0.5) * 2.2;
+          const speed = 1.8 + Math.random() * 4.5;
+          pushParticle({
+            type: 'heart',
+            x,
+            y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 1.2,
+            gravity: -0.02, // Gently floats upward
+            drag: 0.975,
+            size: 10 + Math.random() * 11,
+            color: heartPalette[Math.floor(Math.random() * heartPalette.length)],
+            rot: (Math.random() - 0.5) * 0.5,
+            vRot: (Math.random() - 0.5) * 0.04,
+            life: 1,
+            decay: 0.011 + Math.random() * 0.008
+          });
+        }
+      }
+
+      // Golden sparkles (used for wish blow-out and subtle cursor trail)
+      function burstSparkles(x, y, count = 18, golden = true) {
+        const palette = golden
+          ? ['#fff9db', '#ffe066', '#ffd43b', '#ffec99', '#ffffff']
+          : ['#ffffff', '#ffe3ec', '#ffd43b', '#e5dbff'];
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 0.8 + Math.random() * 3.6;
+          pushParticle({
+            type: 'sparkle',
+            x,
+            y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 0.5,
+            gravity: 0.02,
+            drag: 0.96,
+            size: 3.5 + Math.random() * 5.5,
+            color: palette[Math.floor(Math.random() * palette.length)],
+            rot: Math.random() * Math.PI,
+            vRot: (Math.random() - 0.5) * 0.14,
+            life: 1,
+            decay: 0.022 + Math.random() * 0.018
+          });
+        }
+      }
+
+      // Dual-side confetti cannons + fireworks grand burst
+      function grandCelebration() {
+        burstConfetti(width * 0.15, height * 0.72, 48);
+        burstConfetti(width * 0.85, height * 0.72, 48);
+        burstHearts(width * 0.5, height * 0.55, 22);
+        burstFirework(width * 0.28, height * 0.26, 36);
+        setTimeout(() => burstFirework(width * 0.72, height * 0.24, 38), 180);
+        setTimeout(() => burstFirework(width * 0.5, height * 0.18, 42), 360);
+      }
+
+      // Subtle mouse & touch sparkle trail
+      let lastTrailTime = 0;
+      function emitTrail(x, y) {
+        const now = performance.now();
+        if (now - lastTrailTime < 28) return;
+        lastTrailTime = now;
+        burstSparkles(x, y, 2, false);
+      }
+
+      window.addEventListener('pointermove', (e) => {
+        emitTrail(e.clientX, e.clientY);
+      }, { passive: true });
+
+      window.addEventListener('pointerdown', (e) => {
+        burstSparkles(e.clientX, e.clientY, 7, false);
+      }, { passive: true });
+
+      // Main 60fps animation loop
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.px = p.x;
+          p.py = p.y;
+          p.vx *= p.drag;
+          p.vy = p.vy * p.drag + p.gravity;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= p.decay;
+
+          if (p.life <= 0 || p.y > height + 40) {
+            particles.splice(i, 1);
+            continue;
+          }
+
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, Math.min(1, p.life));
+
+          if (p.type === 'confetti') {
+            p.rot += p.vRot;
+            p.tilt += p.vTilt;
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.scale(1, Math.cos(p.tilt));
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size * 0.32, p.size, p.size * 0.64);
+          } else if (p.type === 'firework') {
+            ctx.strokeStyle = p.color;
+            ctx.lineWidth = p.size;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(p.px, p.py);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size * 0.5, 0, Math.PI * 2);
+            ctx.fill();
+          } else if (p.type === 'heart') {
+            p.rot += p.vRot;
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.color;
+            drawHeart(ctx, p.size);
+          } else if (p.type === 'sparkle') {
+            p.rot += p.vRot;
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.color;
+            drawSparkle(ctx, p.size * p.life);
+          }
+
+          ctx.restore();
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      function startLoop() {
+        if (animStarted) return;
+        animStarted = true;
+        animate();
+      }
+
+      window.addEventListener('load', startLoop);
+      if (document.readyState === 'complete') {
+        startLoop();
+      }
+
+      return {
+        burstConfetti,
+        burstFirework,
+        burstHearts,
+        burstSparkles,
+        grandCelebration
+      };
+    })();
+
+    /* =========================================================================
+       5. INTERACTIVE MULTI-PHOTO POLAROID DECK CONTROLLER (SCREEN 3)
+       Supports drag/swipe with live tilt, tap-to-flip, Prev/Next buttons,
+       clickable dots, keyboard arrows, and 3D hover tilt on the top card.
+       ========================================================================= */
+    const PolaroidDeck = (() => {
+      const deckEl = document.getElementById('polaroid-deck');
+      const counterEl = document.getElementById('deck-counter');
+      const dotsEl = document.getElementById('deck-dots');
+      const btnPrev = document.getElementById('btn-photo-prev');
+      const btnNext = document.getElementById('btn-photo-next');
+      const btnToLetter = document.getElementById('btn-to-letter');
+
+      const total = Math.max(1, MEMORIES.length);
+      const validTapes = new Set(['pink', 'lavender', 'peach', 'mint']);
+      const cornerStickers = ['✨', '🌸', '⭐', '💫'];
+
+      // Visual transforms for top card + up to 3 peeking cards behind it
+      const STACK_POSES = [
+        { x: 0,   y: 0,  rot: -1.2, scale: 1.0,  opacity: 1.0,  z: 24, bright: 1.0  },
+        { x: -13, y: 6,  rot: -5.2, scale: 0.95, opacity: 0.97, z: 18, bright: 0.97 },
+        { x: 14,  y: 10, rot: 4.5,  scale: 0.90, opacity: 0.92, z: 12, bright: 0.94 },
+        { x: -6,  y: 14, rot: -2.4, scale: 0.85, opacity: 0.84, z: 6,  bright: 0.90 }
+      ];
+
+      let currentIndex = 0;
+      let reachedLast = false;
+      let isFlipping = false;
+      let cards = [];
+      let dotButtons = [];
+
+      // Active pointer drag state
+      let dragState = {
+        active: false,
+        pointerId: null,
+        card: null,
+        startX: 0,
+        startY: 0,
+        dx: 0,
+        dy: 0,
+        startTime: 0
+      };
+
+      // Build all Polaroid cards & dot indicators from the MEMORIES array
+      function init() {
+        deckEl.innerHTML = '';
+        dotsEl.innerHTML = '';
+        cards = [];
+        dotButtons = [];
+
+          // Photo frame with ambient blurred backdrop + uncropped foreground image
+          const frame = document.createElement('div');
+          frame.className = 'polaroid-photo-frame';
+
+          const fallbackUri = createMemoryFallbackUri(item.src, idx);
+          const photoFit = item.fit === 'cover' ? 'cover' : 'contain';
+          const photoPos = item.position || 'center';
+
+          // Soft ambient blurred background layer (fills edges seamlessly for portrait/landscape)
+          const bgBlurImg = document.createElement('img');
+          bgBlurImg.className = 'photo-bg-blur';
+          bgBlurImg.alt = '';
+          bgBlurImg.setAttribute('aria-hidden', 'true');
+          bgBlurImg.draggable = false;
+          if (photoFit === 'cover') {
+            bgBlurImg.style.display = 'none';
+          }
+
+          // Crisp foreground image layer
+          const img = document.createElement('img');
+          img.className = 'photo-main';
+          img.alt = item.caption || `Memory ${idx + 1}`;
+          img.draggable = false;
+          img.style.objectFit = photoFit;
+          img.style.objectPosition = photoPos;
+
+          // Update both foreground and blur layers cleanly if a local file isn't found
+          const applyFallback = () => {
+            img.onerror = null;
+            bgBlurImg.onerror = null;
+            img.src = fallbackUri;
+            bgBlurImg.src = fallbackUri;
+          };
+
+          img.onerror = applyFallback;
+          bgBlurImg.onerror = () => {
+            bgBlurImg.onerror = null;
+            bgBlurImg.src = fallbackUri;
+          };
+
+          bgBlurImg.src = item.src;
+          img.src = item.src;
+
+          const sheen = document.createElement('div');
+          sheen.className = 'polaroid-sheen';
+
+          frame.appendChild(bgBlurImg);
+          frame.appendChild(img);
+          frame.appendChild(sheen);
+          card.appendChild(frame);
+
+          // Handwritten caption below photo
+          const caption = document.createElement('p');
+          caption.className = 'polaroid-caption';
+          caption.textContent = item.caption || '';
+          card.appendChild(caption);
+
+          // Attach interactive drag/swipe, tap, and 3D hover tilt listeners
+          attachCardInteractions(card, idx);
+
+          deckEl.appendChild(card);
+          cards.push(card);
+
+          // Create corresponding dot button
+          const dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'deck-dot';
+          dot.setAttribute('aria-label', `View photo ${idx + 1}`);
+          dot.addEventListener('click', () => jumpTo(idx));
+          dotsEl.appendChild(dot);
+          dotButtons.push(dot);
+        });
+
+        renderStack(true);
+      }
+
+      // Compute transform string for a given stack depth
+      function applyPose(card, depth) {
+        if (depth < STACK_POSES.length) {
+          const p = STACK_POSES[depth];
+          card.style.zIndex = String(p.z);
+          card.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) rotate(${p.rot}deg) scale(${p.scale})`;
+          card.style.opacity = String(p.opacity);
+          card.style.filter = `brightness(${p.bright})`;
+        } else {
+          card.style.zIndex = '2';
+          card.style.transform = 'translate3d(0px, 16px, 0) rotate(0deg) scale(0.82)';
+          card.style.opacity = '0';
+          card.style.filter = 'brightness(0.88)';
+        }
+        card.classList.toggle('is-top', depth === 0);
+      }
+
+      // Update stack poses, counter text, dot states, and last-photo highlight
+      function renderStack(skipHighlightEffect = false) {
+        cards.forEach((card, idx) => {
+          if (card.classList.contains('tossing-left') || card.classList.contains('tossing-right')) {
+            return;
+          }
+          const depth = (idx - currentIndex + total) % total;
+          applyPose(card, depth);
+        });
+
+        counterEl.textContent = `${currentIndex + 1} / ${total}`;
+        dotButtons.forEach((dot, idx) => {
+          dot.classList.toggle('active', idx === currentIndex);
+          dot.setAttribute('aria-selected', idx === currentIndex ? 'true' : 'false');
+        });
+
+        // Once the user reaches the last photo, pulse/highlight "Keep Going →" with a celebratory sparkle
+        if (!skipHighlightEffect && currentIndex === total - 1 && !reachedLast) {
+          reachedLast = true;
+          btnToLetter.classList.add('ready-pulse');
+          const btnRect = btnToLetter.getBoundingClientRect();
+          if (btnRect.width > 0) {
+            ParticleFX.burstSparkles(
+              btnRect.left + btnRect.width / 2,
+              btnRect.top + btnRect.height / 2,
+              20,
+              true
+            );
+          }
+        }
+      }
+
+      // Emit a mini burst of hearts & sparkles from the center of the deck
+      function emitDeckBurst(clientX, clientY) {
+        const rect = deckEl.getBoundingClientRect();
+        const cx = clientX || rect.left + rect.width / 2;
+        const cy = clientY || rect.top + rect.height * 0.45;
+        ParticleFX.burstHearts(cx, cy, 8);
+        ParticleFX.burstSparkles(cx, cy, 10, false);
+      }
+
+      // Flip forward (or backward via swipe right) by tossing the top card smoothly off the deck
+      function flipWithToss(direction = 'left', step = 1, burstX = null, burstY = null) {
+        if (total <= 1) {
+          SoundEngine.playChime('sparkle');
+          emitDeckBurst(burstX, burstY);
+          return;
+        }
+        if (isFlipping) return;
+        isFlipping = true;
+
+        const outgoingCard = cards[currentIndex];
+        const tossClass = direction === 'right' ? 'tossing-right' : 'tossing-left';
+
+        SoundEngine.playChime('flip');
+        emitDeckBurst(burstX, burstY);
+
+        outgoingCard.classList.remove('is-top', 'is-dragging');
+        outgoingCard.style.zIndex = '32';
+        outgoingCard.classList.add(tossClass);
+
+        // Immediately advance the stack beneath so the next card smoothly rises into focus
+        currentIndex = (currentIndex + step + total) % total;
+        renderStack(false);
+
+        // After the tossed card flies out, tuck it cleanly to the back of the deck
+        setTimeout(() => {
+          outgoingCard.classList.add('no-transition');
+          outgoingCard.classList.remove(tossClass);
+          const backDepth = (Number(outgoingCard.dataset.index) - currentIndex + total) % total;
+          applyPose(outgoingCard, backDepth);
+          // Force style reflow before restoring transitions
+          void outgoingCard.offsetWidth;
+          outgoingCard.classList.remove('no-transition');
+          isFlipping = false;
+        }, 350);
+      }
+
+      // Bring the previous card swooping smoothly onto the top from the left (for Prev button / Left Arrow)
+      function prevCard() {
+        if (total <= 1 || isFlipping) return;
+        isFlipping = true;
+
+        const incomingIdx = (currentIndex - 1 + total) % total;
+        const incomingCard = cards[incomingIdx];
+
+        SoundEngine.playChime('flip');
+        emitDeckBurst();
+
+        // Position incoming card off-left invisibly before gliding it onto the top
+        incomingCard.classList.add('no-transition');
+        incomingCard.style.zIndex = '32';
+        incomingCard.style.transform = 'translate3d(-250px, -18px, 0) rotate(-18deg) scale(0.95)';
+        incomingCard.style.opacity = '0';
+        void incomingCard.offsetWidth;
+        incomingCard.classList.remove('no-transition');
+
+        currentIndex = incomingIdx;
+        requestAnimationFrame(() => {
+          renderStack(false);
+        });
+
+        setTimeout(() => {
+          isFlipping = false;
+        }, 360);
+      }
+
+      function nextCard() {
+        flipWithToss('left', 1);
+      }
+
+      function jumpTo(targetIdx) {
+        if (targetIdx === currentIndex || isFlipping) return;
+        const forwardDist = (targetIdx - currentIndex + total) % total;
+        if (forwardDist === 1) {
+          nextCard();
+        } else if (forwardDist === total - 1) {
+          prevCard();
+        } else {
+          SoundEngine.playChime('flip');
+          emitDeckBurst();
+          currentIndex = targetIdx;
+          renderStack(false);
+        }
+      }
+
+      // Attach pointer drag/swipe, tap-to-flip, and smooth 3D hover tilt
+      function attachCardInteractions(card, idx) {
+        card.addEventListener('pointerdown', (e) => {
+          if (idx !== currentIndex || isFlipping) return;
+          dragState = {
+            active: true,
+            pointerId: e.pointerId,
+            card,
+            startX: e.clientX,
+            startY: e.clientY,
+            dx: 0,
+            dy: 0,
+            startTime: performance.now()
+          };
+          card.classList.add('is-dragging');
+          try {
+            card.setPointerCapture(e.pointerId);
+          } catch (err) {
+            // Safe fallback if pointer capture isn't supported
+          }
+        });
+
+        card.addEventListener('pointermove', (e) => {
+          // Handle live drag/swipe when pointer is down
+          if (dragState.active && dragState.card === card) {
+            dragState.dx = e.clientX - dragState.startX;
+            dragState.dy = (e.clientY - dragState.startY) * 0.35;
+            const dragRot = -1.2 + dragState.dx * 0.085;
+            card.style.transform = `translate3d(${dragState.dx}px, ${dragState.dy}px, 0) rotate(${dragRot}deg) scale(1.02)`;
+            return;
+          }
+
+          // Smooth 3D hover tilt on desktop when not dragging
+          if (idx === currentIndex && !isFlipping && e.pointerType === 'mouse') {
+            const rect = card.getBoundingClientRect();
+            const xNorm = (e.clientX - rect.left) / rect.width - 0.5;
+            const yNorm = (e.clientY - rect.top) / rect.height - 0.5;
+            const rotY = xNorm * 14;
+            const rotX = -yNorm * 12;
+            card.style.transform = `translate3d(0, -3px, 0) rotate(-1.2deg) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.025)`;
+          }
+        });
+
+        function finishDrag(e, cancelled = false) {
+          if (!dragState.active || dragState.card !== card) return;
+          const { dx, dy, startTime, pointerId } = dragState;
+          dragState.active = false;
+          dragState.card = null;
+          card.classList.remove('is-dragging');
+
+          try {
+            if (card.hasPointerCapture(pointerId)) {
+              card.releasePointerCapture(pointerId);
+            }
+          } catch (err) {
+            // Safe ignore
+          }
+
+          if (cancelled) {
+            applyPose(card, 0);
+            return;
+          }
+
+          const elapsed = Math.max(1, performance.now() - startTime);
+          const velocity = Math.abs(dx) / elapsed;
+          const totalMove = Math.hypot(dx, dy);
+
+          // Tap / Click (minimal movement) -> smoothly fling to next photo
+          if (totalMove <= 10) {
+            flipWithToss('left', 1, e.clientX, e.clientY);
+            return;
+          }
+
+          // Swipe left -> toss left to next photo
+          if (dx < -62 || (dx < -28 && velocity > 0.38)) {
+            flipWithToss('left', 1, e.clientX, e.clientY);
+            return;
+          }
+
+          // Swipe right -> toss right to previous photo
+          if (dx > 62 || (dx > 28 && velocity > 0.38)) {
+            flipWithToss('right', -1, e.clientX, e.clientY);
+            return;
+          }
+
+          // Below threshold -> elastic snap-back to center
+          applyPose(card, 0);
+        }
+
+        card.addEventListener('pointerup', (e) => finishDrag(e, false));
+        card.addEventListener('pointercancel', (e) => finishDrag(e, true));
+
+        card.addEventListener('pointerleave', () => {
+          if (!dragState.active && idx === currentIndex && !isFlipping) {
+            applyPose(card, 0);
+          }
+        });
+      }
+
+      // Wire Prev/Next pill buttons
+      btnPrev.addEventListener('click', prevCard);
+      btnNext.addEventListener('click', nextCard);
+
+      // Clean reset back to photo #1 for Replay Card
+      function reset() {
+        isFlipping = false;
+        dragState.active = false;
+        currentIndex = 0;
+        reachedLast = false;
+        btnToLetter.classList.remove('ready-pulse');
+        cards.forEach((c) => {
+          c.classList.remove('tossing-left', 'tossing-right', 'is-dragging', 'no-transition');
+        });
+        renderStack(true);
+      }
+
+      init();
+
+      return {
+        nextCard,
+        prevCard,
+        reset
+      };
+    })();
+
+    /* =========================================================================
+       6. SCREEN STATE CONTROLLER & INTERACTIVE LOGIC
+       ========================================================================= */
+    const App = (() => {
+      let currentScreen = 1;
+      let envelopeOpened = false;
+      let cakeStep = 0; // 0 = lit, 1 = blown out, 2 = cut
+      let activeTimers = [];
+      let finaleFireworksInterval = null;
+
+      const screens = [1, 2, 3, 4].map((n) => document.getElementById(`screen${n}`));
+      const dots = Array.from(document.querySelectorAll('.progress-dot'));
+      const envelopeScene = document.getElementById('envelope-scene');
+      const envelopePrompt = document.getElementById('envelope-prompt');
+      const waxSeal = document.getElementById('wax-seal');
+      const cakeStage = document.getElementById('cake-stage');
+      const cakeSubtitle = document.getElementById('cake-subtitle');
+      const cakePrompt = document.getElementById('cake-prompt');
+      const letterParas = Array.from(document.querySelectorAll('.letter-para'));
+      const finaleIcons = document.getElementById('finale-icons');
+
+      function scheduleTimer(fn, ms) {
+        const id = setTimeout(() => {
+          activeTimers = activeTimers.filter((t) => t !== id);
+          fn();
+        }, ms);
+        activeTimers.push(id);
+        return id;
+      }
+
+      function clearAllTimers() {
+        activeTimers.forEach((id) => clearTimeout(id));
+        activeTimers = [];
+        if (finaleFireworksInterval) {
+          clearInterval(finaleFireworksInterval);
+          finaleFireworksInterval = null;
+        }
+      }
+
+      // Smoothly transition between screens (scale + fade + slide)
+      function goToScreen(num) {
+        if (num === currentScreen) return;
+        const prevEl = screens[currentScreen - 1];
+        const nextEl = screens[num - 1];
+
+        prevEl.classList.remove('active');
+        prevEl.classList.add('exiting');
+
+        scheduleTimer(() => {
+          prevEl.classList.remove('exiting');
+        }, 680);
+
+        nextEl.classList.remove('exiting');
+        requestAnimationFrame(() => {
+          nextEl.classList.add('active');
+        });
+
+        currentScreen = num;
+
+        // Update bottom 4-dot progress indicator
+        dots.forEach((dot, idx) => {
+          dot.classList.toggle('active', idx + 1 === num);
+        });
+
+        // Screen-specific entrance choreography
+        if (num === 3) {
+          ParticleFX.burstHearts(window.innerWidth / 2, window.innerHeight * 0.42, 16);
+        } else if (num === 4) {
+          startLetterFinale();
+        }
+      }
+
+      /* --- SCREEN 1: 3D Envelope Interaction --- */
+      function handleEnvelopeOpen() {
+        if (envelopeOpened || currentScreen !== 1) return;
+        envelopeOpened = true;
+
+        // Unlock & gently start the music-box Happy Birthday melody on first tap
+        SoundEngine.startMelodyIfReady();
+        SoundEngine.playChime('envelope');
+
+        // Pop seal & trigger burst of hearts right from the wax seal
+        const rect = waxSeal.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+
+        envelopeScene.classList.add('opened');
+        envelopePrompt.textContent = 'Opening your surprise... ✨';
+
+        ParticleFX.burstHearts(cx, cy, 24);
+        scheduleTimer(() => {
+          ParticleFX.burstConfetti(cx, cy - 20, 62);
+        }, 240);
+
+        // Transition smoothly to Screen 2 after ~1.15s
+        scheduleTimer(() => {
+          goToScreen(2);
+        }, 1150);
+      }
+
+      envelopeScene.addEventListener('click', handleEnvelopeOpen);
+      envelopeScene.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleEnvelopeOpen();
+        }
+      });
+
+      /* --- SCREEN 2: Two-Step Interactive Cake --- */
+      function handleCakeTap() {
+        if (currentScreen !== 2) return;
+        const rect = cakeStage.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height * 0.35;
+
+        if (cakeStep === 0) {
+          // Step 1: Blow out the candles with smoke & golden sparkles
+          cakeStep = 1;
+          cakeStage.classList.add('candles-out');
+          SoundEngine.playChime('wish');
+
+          ParticleFX.burstSparkles(cx - 28, cy, 14, true);
+          ParticleFX.burstSparkles(cx, cy - 10, 18, true);
+          ParticleFX.burstSparkles(cx + 28, cy, 14, true);
+
+          cakeSubtitle.textContent = 'Your wish is on its way to the stars! 🌟';
+          cakePrompt.textContent = 'Wish made! ✨ Tap the cake to cut it!';
+        } else if (cakeStep === 1) {
+          // Step 2: Cut the cake with sparkle sweep, slice pop, confetti & fireworks
+          cakeStep = 2;
+          cakeStage.classList.add('cake-cut');
+          SoundEngine.playChime('celebrate');
+
+          cakePrompt.textContent = 'Yay!! Party time! 🎉🎂';
+          ParticleFX.burstConfetti(cx, cy + 45, 75);
+          ParticleFX.burstFirework(window.innerWidth * 0.25, window.innerHeight * 0.25, 36);
+          scheduleTimer(() => {
+            ParticleFX.burstFirework(window.innerWidth * 0.75, window.innerHeight * 0.24, 38);
+          }, 220);
+
+          // Smoothly transition to Screen 3 after ~1.15s
+          scheduleTimer(() => {
+            goToScreen(3);
+          }, 1150);
+        }
+      }
+
+      cakeStage.addEventListener('click', handleCakeTap);
+      cakeStage.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCakeTap();
+        }
+      });
+
+      /* --- SCREEN 3: Keyboard Arrow Navigation & Next Screen Button --- */
+      window.addEventListener('keydown', (e) => {
+        if (currentScreen !== 3) return;
+        if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          PolaroidDeck.nextCard();
+        } else if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          PolaroidDeck.prevCard();
+        }
+      });
+
+      document.getElementById('btn-to-letter').addEventListener('click', () => {
+        SoundEngine.playChime('sparkle');
+        goToScreen(4);
+      });
+
+      /* --- SCREEN 4: Staggered Letter Reveal & Grand Finale --- */
+      function startLetterFinale() {
+        // Reset before revealing
+        letterParas.forEach((p) => p.classList.remove('visible'));
+        finaleIcons.classList.remove('visible');
+
+        // Staggered paragraph fade-and-rise every ~460ms
+        letterParas.forEach((para, idx) => {
+          scheduleTimer(() => {
+            para.classList.add('visible');
+          }, 380 + idx * 460);
+        });
+
+        // Reveal bouncing 🎉💖 icons after the final paragraph
+        scheduleTimer(() => {
+          finaleIcons.classList.add('visible');
+          ParticleFX.burstHearts(window.innerWidth / 2, window.innerHeight * 0.6, 18);
+        }, 380 + letterParas.length * 460 + 220);
+
+        // Initial gentle celebratory burst
+        scheduleTimer(() => {
+          ParticleFX.burstFirework(window.innerWidth * 0.24, window.innerHeight * 0.22, 34);
+        }, 400);
+        scheduleTimer(() => {
+          ParticleFX.burstFirework(window.innerWidth * 0.76, window.innerHeight * 0.2, 34);
+        }, 900);
+
+        // Gentle periodic background fireworks while enjoying Screen 4
+        if (finaleFireworksInterval) clearInterval(finaleFireworksInterval);
+        finaleFireworksInterval = setInterval(() => {
+          if (currentScreen !== 4) return;
+          const fx = window.innerWidth * (0.14 + Math.random() * 0.72);
+          const fy = window.innerHeight * (0.12 + Math.random() * 0.28);
+          ParticleFX.burstFirework(fx, fy, 30);
+        }, 2800);
+      }
+
+      // "Send More Confetti 🎉" Button
+      document.getElementById('btn-more-confetti').addEventListener('click', () => {
+        SoundEngine.playChime('celebrate');
+        ParticleFX.grandCelebration();
+      });
+
+      // "Replay Card ↺" Button — Resets all 4 screens cleanly (including photo stack)
+      document.getElementById('btn-replay').addEventListener('click', () => {
+        clearAllTimers();
+        SoundEngine.playChime('sparkle');
+
+        // Reset Screen 1 (Envelope closed & seal restored)
+        envelopeOpened = false;
+        envelopeScene.classList.remove('opened');
+        envelopePrompt.textContent = 'Tap to open 💌';
+
+        // Reset Screen 2 (Candles relit, smoke cleared, cake uncut)
+        cakeStep = 0;
+        cakeStage.classList.remove('candles-out', 'cake-cut');
+        cakeSubtitle.textContent = 'Make a wish & tap the candles...';
+        cakePrompt.textContent = 'Tap the cake to blow out the candles 🕯️';
+
+        // Reset Screen 3 Multi-Photo Polaroid Deck back to photo #1
+        PolaroidDeck.reset();
+
+        // Reset Screen 4 paragraphs & finale icons
+        letterParas.forEach((p) => p.classList.remove('visible'));
+        finaleIcons.classList.remove('visible');
+
+        // Return smoothly to Screen 1
+        goToScreen(1);
+      });
+    })();
+  </script>
+</body>
+</html>
