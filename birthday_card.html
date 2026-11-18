@@ -693,20 +693,25 @@
     /* =====================================================================
        SCREEN 3: INTERACTIVE MULTI-PHOTO POLAROID DECK / STACK
        ===================================================================== */
+    #screen3 {
+      padding: 14px 16px 52px;
+    }
+
     .polaroid-deck-stage {
       perspective: 1100px;
       position: relative;
-      width: 248px;
-      height: 298px;
-      margin: 12px 0 14px;
+      width: min(305px, 84vw);
+      height: min(395px, 49dvh);
+      min-height: 320px;
+      margin: 10px 0 12px;
       touch-action: none; /* Enables crisp touch drag/swipe without scrolling */
     }
 
     @media (min-width: 640px) {
       .polaroid-deck-stage {
-        width: 282px;
-        height: 336px;
-        margin: 14px 0 16px;
+        width: min(330px, 84vw);
+        height: min(425px, 52dvh);
+        margin: 12px 0 14px;
       }
     }
 
@@ -734,8 +739,9 @@
       position: absolute;
       inset: 0;
       background: #fffdfb;
-      padding: 12px 12px 18px 12px;
-      border-radius: 9px;
+      padding: 12px 12px 14px 12px;
+      border-radius: 10px;
+      overflow: visible;
       box-shadow:
         0 18px 34px rgba(130, 52, 92, 0.2),
         0 4px 12px rgba(0, 0, 0, 0.08);
@@ -754,7 +760,7 @@
 
     @media (min-width: 640px) {
       .polaroid-card {
-        padding: 14px 14px 22px 14px;
+        padding: 14px 14px 16px 14px;
       }
     }
 
@@ -855,21 +861,40 @@
       );
     }
 
+    /* Strict flex photo window so caption always has dedicated space below */
     .polaroid-photo-frame {
+      flex: 1 1 0;
+      min-height: 0;
       position: relative;
       width: 100%;
-      flex: 1 1 auto;
-      min-height: 0;
-      border-radius: 5px;
       overflow: hidden;
+      border-radius: 5px;
       background: #ffe6ee;
       box-shadow: inset 0 0 0 1px rgba(120, 60, 85, 0.08);
     }
 
-    .polaroid-photo-frame img {
+    /* Soft blurred ambient backdrop fills any extra edges seamlessly */
+    .polaroid-photo-frame .photo-bg-blur {
+      position: absolute;
+      inset: -12px;
+      width: calc(100% + 24px);
+      height: calc(100% + 24px);
+      object-fit: cover;
+      filter: blur(14px) brightness(0.95) saturate(1.1);
+      opacity: 0.72;
+      transform: scale(1.06);
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Sharp foreground photo shows 100% intact without cropping heads/edges */
+    .polaroid-photo-frame .photo-fg {
+      position: relative;
+      z-index: 1;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      object-position: center;
       display: block;
       pointer-events: none;
       -webkit-user-drag: none;
@@ -879,6 +904,7 @@
     .polaroid-sheen {
       position: absolute;
       inset: 0;
+      z-index: 2;
       background: linear-gradient(
         118deg,
         rgba(255, 255, 255, 0) 28%,
@@ -918,7 +944,7 @@
 
     .sticker-tl { top: -11px; left: -13px; animation-delay: 0s; }
     .sticker-tr { top: 8px; right: -15px; animation-delay: 0.7s; font-size: 23px; }
-    .sticker-bl { bottom: 38px; left: -13px; animation-delay: 1.3s; font-size: 19px; }
+    .sticker-bl { bottom: 44px; left: -13px; animation-delay: 1.3s; font-size: 19px; }
     .sticker-br { bottom: -9px; right: -12px; animation-delay: 0.4s; font-size: 22px; }
 
     @keyframes stickerFloat {
@@ -926,24 +952,19 @@
       50% { transform: translateY(-6px) rotate(8deg) scale(1.12); }
     }
 
-    /* Handwritten caption inside each Polaroid */
+    /* Handwritten caption inside each Polaroid — never clips descenders or emojis */
     .polaroid-caption {
+      flex: 0 0 auto;
+      overflow: visible;
+      white-space: normal;
+      word-wrap: break-word;
       font-family: var(--font-hand);
-      font-size: 1.48rem;
-      line-height: 1.15;
+      font-size: clamp(1.2rem, 4.4vw, 1.55rem);
+      line-height: 1.35;
       text-align: center;
       color: #68304f;
-      margin: 11px 4px 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    @media (min-width: 640px) {
-      .polaroid-caption {
-        font-size: 1.65rem;
-        margin-top: 13px;
-      }
+      margin: 10px 0 0;
+      padding: 2px 6px 4px;
     }
 
     /* Glassmorphism Deck Navigation Pill Controls & Dots */
@@ -952,7 +973,7 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .deck-nav-btn {
@@ -1004,7 +1025,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .deck-dot {
@@ -1455,10 +1476,10 @@
          SCREEN 3: MEMORY LANE (INTERACTIVE MULTI-PHOTO POLAROID STACK)
          =============================================================== -->
     <section id="screen3" class="screen" aria-label="Memory Lane Photo Stack">
-      <h2 class="font-display float-heading text-3xl sm:text-4xl text-center text-[#591f40] mb-0.5 leading-tight">
+      <h2 class="font-display float-heading text-3xl sm:text-4xl text-center text-[#591f40] mb-0 leading-tight">
         Remember these? 📸
       </h2>
-      <p class="text-xs sm:text-sm font-semibold text-[#7c3b5e] opacity-85 mb-1">
+      <p class="text-xs sm:text-sm font-semibold text-[#7c3b5e] opacity-85 mb-0.5">
         Swipe or tap a photo to flip through memories ✨
       </p>
 
@@ -1495,7 +1516,7 @@
       <button
         id="btn-to-letter"
         type="button"
-        class="btn-glow px-7 py-3 text-base sm:text-lg"
+        class="btn-glow px-7 py-2.5 sm:py-3 text-base sm:text-lg"
       >
         Keep Going →
       </button>
@@ -1569,6 +1590,9 @@
        - Put your photo files in the same folder as this HTML file.
        - Available tapeColor options: 'pink' | 'lavender' | 'peach' | 'mint'
        - Any emoji works for sticker!
+       - Optional fit: 'contain' (default, shows 100% of photo with soft blurred backdrop)
+                       or 'cover' (fills the frame edge-to-edge)
+       - Optional position: 'center' (default), 'top', 'center 20%', etc.
        ========================================================================= */
     const MEMORIES = [
       {
@@ -2391,23 +2415,53 @@
             card.appendChild(span);
           });
 
-          // Photo frame + image with distinct pastel SVG fallback
+          // Photo frame with two-layer display (ambient blurred backdrop + sharp uncropped foreground)
           const frame = document.createElement('div');
           frame.className = 'polaroid-photo-frame';
 
+          const fallbackUri = createMemoryFallbackUri(item.src, idx);
+          const photoFit = item.fit === 'cover' ? 'cover' : 'contain';
+          const photoPos = item.position || 'center';
+
+          // Layer A: Soft blurred background image filling any letterbox edges smoothly
+          const bgBlur = document.createElement('img');
+          bgBlur.className = 'photo-bg-blur';
+          bgBlur.alt = '';
+          bgBlur.setAttribute('aria-hidden', 'true');
+          bgBlur.draggable = false;
+          if (photoFit === 'cover') {
+            bgBlur.style.display = 'none';
+          }
+
+          // Layer B: Crisp foreground image (contain by default so heads/edges are never cropped)
           const img = document.createElement('img');
+          img.className = 'photo-fg';
           img.alt = item.caption || `Memory ${idx + 1}`;
           img.draggable = false;
-          const fallbackUri = createMemoryFallbackUri(item.src, idx);
-          img.onerror = function () {
-            this.onerror = null;
-            this.src = fallbackUri;
+          img.style.objectFit = photoFit;
+          img.style.objectPosition = photoPos;
+
+          // Gracefully swap both layers to the pastel SVG fallback if local image is unavailable
+          const applyFallback = () => {
+            img.onerror = null;
+            bgBlur.onerror = null;
+            img.src = fallbackUri;
+            bgBlur.src = fallbackUri;
           };
+
+          img.onerror = applyFallback;
+          bgBlur.onerror = () => {
+            bgBlur.onerror = null;
+            bgBlur.src = fallbackUri;
+          };
+
+          bgBlur.src = item.src;
           img.src = item.src;
 
           const sheen = document.createElement('div');
           sheen.className = 'polaroid-sheen';
 
+          frame.appendChild(bgBlur);
           frame.appendChild(img);
           frame.appendChild(sheen);
           card.appendChild(frame);
